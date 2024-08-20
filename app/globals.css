@@ -31,3 +31,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.bg-sl-3 {
+  @apply bg-slate-300;
+}
+
+.brd{
+  @apply border-2 border-red-700
+}
