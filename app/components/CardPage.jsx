@@ -38,7 +38,7 @@ const CardPage = () => {
     <div className="relative flex flex-col md:flex-col lg:flex-row xl:flex-row justify-center gap-[20px] w-full h-full">
       <div className=" lg:sticky lg:top-0 flex flex-col justify-center items-center lg:w-1/3 md:w-full xl:w-1/3 h-full p-6 bg-white">
         <SearchBox />
-        <div id='card-picture' className="relative w-[296.34px] h-[385px]">
+        <div id='card-picture' className="relative bg-transparent">
           <Image
             src="/Rarity-Gallery/2.webp"
             alt="Player Image"
