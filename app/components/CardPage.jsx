@@ -36,7 +36,7 @@ const CardPage = () => {
                 <div
                     id='card-picture'
                     ref={cardPictureRef}
-                    className="relative w-[296.34px] h-[385px] bg-transparent"
+                    className="relative w-[296.34px] h-[385px] bg-transparent mt-6"
                     style={{
                         backgroundImage: 'url(/Rarity-Gallery/2.webp)',
                         backgroundSize: 'cover', // Ensures the background image covers the entire div
