@@ -1,12 +1,10 @@
 "use client";
-import Image from 'next/image'
-import React from 'react'
+import React, { useEffect } from 'react';
+import Image from 'next/image';
 import html2canvas from 'html2canvas';
 
-
-
-
 const CardPicture = () => {
+
 
     const handleDownload = () => {
         const element = document.getElementById('card-picture');
@@ -22,12 +20,13 @@ const CardPicture = () => {
         });
     };
 
-
     return (
-        <div className="relative pt-5 flex flex-col items-center">
-            <div id='card-picture' className="relative bg-transparent">
-                <Image
 
+        <div className="relative pt-5 flex flex-col items-center">
+            
+            <div id='card-picture' className="relative bg-transparent">
+                
+                <Image
                     src="/Rarity-Gallery/2.webp"
                     alt="Player Image"
                     width={296.34}
@@ -35,14 +34,12 @@ const CardPicture = () => {
                 />
                 <p className="absolute top-20 left-10 text-white">gghdf</p>
             </div>
-
             <button onClick={handleDownload} className="mt-4 p-2 bg-selection-color text-white rounded">
                 Download
             </button>
         </div>
 
-
     );
 };
 
-export default CardPicture
+export default CardPicture;

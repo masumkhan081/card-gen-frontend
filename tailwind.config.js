@@ -14,7 +14,12 @@ module.exports = {
       },
       colors:{
          'selection-color': '#1E73BE',
-      }
+      },
+      screens: {
+        'sm': '425px',
+        'lg': '1111px',   
+      },
+      
     },
   },
   plugins: [],

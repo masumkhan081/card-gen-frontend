@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 *,
 *::before,
 *::after {
@@ -12,14 +14,17 @@
 
 html,
 body {
+  margin: 0;
   height: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: 'poopins';
   background-color: rgb(255, 255, 255, 1);
   color: #1E73BE;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding: 10px;
+ 
+
+
 
 }
 
@@ -67,6 +72,9 @@ button {
   border-radius: 0.575rem;
   cursor: pointer;
   transition: background-color 0.2s;
+  font-weight: bold;
+  font-size: 13.6px;
+
 }
 
 button:hover {
@@ -157,3 +165,4 @@ select:focus {
     }
   }
 }
+
