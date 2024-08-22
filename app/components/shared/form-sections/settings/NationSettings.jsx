@@ -18,7 +18,7 @@ const NationSettings = () => {
       headers: { "content-type": "multipart/form-data" },
     };
 
-    await fetch("http://localhost:3001/countries", {
+    await fetch("http://localhost:5000/countries", {
       method: "POST",
       body: formData,
       headers: {},

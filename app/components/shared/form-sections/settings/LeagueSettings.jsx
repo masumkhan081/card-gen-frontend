@@ -18,7 +18,7 @@ const LeagueSettings = () => {
             headers: { "content-type": "multipart/form-data" },
         };
 
-        await fetch("http://localhost:3001/leagues", {
+        await fetch("http://localhost:5000/leagues", {
             method: "POST",
             body: formData,
             headers: {},

@@ -7,6 +7,7 @@ const SearchBox = () => {
                 type="search"
                 id="search"
                 placeholder="Search..."
+                className='mb-7'
             />
         </>
     )
