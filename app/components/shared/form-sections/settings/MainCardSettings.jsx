@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 const MainCardSettings = () => {
 
-    const [cardName, setCardName] = useState("");
+    const [cardName, setCardName] = useState("crd nme");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -49,6 +49,7 @@ const MainCardSettings = () => {
                             <input
                                 id="cardName"
                                 name="cardName"
+                                value={cardName}
                                 onChange={(e)=>setCardName(e.target.name)}
                                 type="text"
                                 placeholder="Card Name.."
