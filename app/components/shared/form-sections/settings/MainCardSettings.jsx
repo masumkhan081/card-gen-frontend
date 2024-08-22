@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
 const MainCardSettings = () => {
 
@@ -7,7 +7,7 @@ const MainCardSettings = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+        console.log("Form Submitted");
         let formData = new FormData();
         formData.append("cardName", cardName);
 
@@ -19,10 +19,10 @@ const MainCardSettings = () => {
             headers: { "content-type": "multipart/form-data" },
         };
 
-        await fetch("http://localhost:3001/cards", {
+        await fetch("http://localhost:5000/cards", {
             method: "POST",
             body: formData,
-            headers: {},
+            headers: config.headers,
             redirect: "follow",
         })
             .then((res) => res.json())
@@ -33,7 +33,6 @@ const MainCardSettings = () => {
                 alert(JSON.stringify(error));
             });
     };
-
 
     return (
         <>
@@ -50,7 +49,7 @@ const MainCardSettings = () => {
                                 id="cardName"
                                 name="cardName"
                                 value={cardName}
-                                onChange={(e)=>setCardName(e.target.name)}
+                                onChange={(e) => setCardName(e.target.value)}
                                 type="text"
                                 placeholder="Card Name.."
                                 className="form-input mt-3"
@@ -74,7 +73,7 @@ const MainCardSettings = () => {
                 </form>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default MainCardSettings
+export default MainCardSettings;

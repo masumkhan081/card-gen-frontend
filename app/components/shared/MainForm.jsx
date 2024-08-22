@@ -9,7 +9,7 @@ import Tactics from './form-sections/Tactics'
 const MainForm = () => {
     return (
         <div className="form-container">
-            <form>
+            <div>
 
 
                 <PrimaryDetails />
@@ -19,7 +19,7 @@ const MainForm = () => {
                 <Tactics/>
 
 
-            </form>
+            </div>
         </div>
     )
 }

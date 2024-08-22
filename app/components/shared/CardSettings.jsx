@@ -7,7 +7,7 @@ import NationSettings from './form-sections/settings/NationSettings'
 const CardSettings = () => {
     return (
         <div className="form-container">
-            <form>
+            <div>
 
 
                 <MainCardSettings/>
@@ -18,7 +18,7 @@ const CardSettings = () => {
 
 
 
-            </form>
+            </div>
         </div>
     )
 }
