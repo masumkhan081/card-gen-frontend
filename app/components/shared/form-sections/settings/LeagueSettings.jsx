@@ -48,7 +48,7 @@ const LeagueSettings = () => {
                                 id="leagueName"
                                 name='leagueName'
                                 type="text"
-                                onChange={()=>setLeagueName(e.target.name)}
+                                onChange={(e)=>setLeagueName(e.target.name)}
                                 placeholder="League Name.."
                                 className="form-input mt-3"
                             />

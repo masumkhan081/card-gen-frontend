@@ -49,7 +49,7 @@ const MainCardSettings = () => {
                             <input
                                 id="cardName"
                                 name="cardName"
-                                onChange={()=>setCardName(e.target.name)}
+                                onChange={(e)=>setCardName(e.target.name)}
                                 type="text"
                                 placeholder="Card Name.."
                                 className="form-input mt-3"

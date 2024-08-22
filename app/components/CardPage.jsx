@@ -59,8 +59,8 @@ const CardPage = () => {
 
 
               <svg
-                x="50%" y="50%"
-                width="248" height="283.86"
+                x="0%" y="0%"
+                width="1400" height="1400"
                 viewBox="0 0 248.02 283.86"
                 class="svg-icon svg-icon--size-sm"
                 role="img"

@@ -50,7 +50,7 @@ const NationSettings = () => {
                                 id="countryName"
                                 name='countryName'
                                 type="text"
-                                onChange={()=>setCountryName(e.target.name)}
+                                onChange={(e)=>setCountryName(e.target.name)}
                                 placeholder="Nation Name.."
                                 className="form-input mt-3"
                             />
