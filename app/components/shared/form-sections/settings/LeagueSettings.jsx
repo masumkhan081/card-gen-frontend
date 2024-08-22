@@ -1,39 +1,73 @@
-import React from 'react'
+"use client";
+import React, { useState } from 'react'
 
 const LeagueSettings = () => {
+    const [leagueName, setLeagueName] = useState("");
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        let formData = new FormData();
+        formData.append("leagueName", leagueName);
+
+        var fileInput = document.getElementById("leagueImage");
+        var file = fileInput.files[0];
+        formData.append("leagueImage", file);
+
+        const config = {
+            headers: { "content-type": "multipart/form-data" },
+        };
+
+        await fetch("http://localhost:3001/leagues", {
+            method: "POST",
+            body: formData,
+            headers: {},
+            redirect: "follow",
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                alert(">> " + JSON.stringify(data));
+            })
+            .catch((error) => {
+                alert(JSON.stringify(error));
+            });
+    };
     return (
+
         <>
             <div className='border pb-5 mt-6'>
                 <div className='h-12 bg-transparent text-selection-color border-b border-gray-400 flex items-center p-4'>
                     <b>League Settings</b>
                 </div>
 
-                <div className='pl-4 pr-4 pt-4'>
+                <form className='pl-4 pr-4 pt-4' onSubmit={handleSubmit}>
                     <div className="form-row flex flex-col md:flex-row lg:flex-row xl:flex-row gap-5 pb-5 justify-between">
                         <div className="form-group w-full">
-                            <label htmlFor="input1" className="form-label">League Name</label>
+                            <label htmlFor="leagueName" className="form-label">League Name</label>
                             <input
-                                id="input1"
+                                id="leagueName"
+                                name='leagueName'
                                 type="text"
-                                placeholder="Name.."
+                                onChange={()=>setLeagueName(e.target.name)}
+                                placeholder="League Name.."
                                 className="form-input mt-3"
                             />
                         </div>
 
                         <div className="form-group w-full">
-                            <label htmlFor="input1" className="form-label">League Icon</label>
+                            <label htmlFor="leagueImage" className="form-label">League Icon</label>
                             <input
-                                id="input1"
+                                id="leagueImage"
+                                name='leagueImage'
                                 type="file"
-                                placeholder="Overall.."
                                 className="form-input mt-3"
                             />
                         </div>
                     </div>
                     <div className="">
-                        <button className="btn">Upload & Save</button>
+                        <button className="btn" type='submit'>Upload & Save</button>
                     </div>
-                </div>
+                </form>
             </div>
         </>
     )

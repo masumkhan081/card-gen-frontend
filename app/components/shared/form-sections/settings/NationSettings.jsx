@@ -1,6 +1,40 @@
-import React from 'react'
+"use client";
+import React, { useState } from 'react'
 
 const NationSettings = () => {
+
+    const [countryName, setCountryName] = useState("");
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        let formData = new FormData();
+        formData.append("countryName", countryName);
+
+        var fileInput = document.getElementById("countryImage");
+        var file = fileInput.files[0];
+        formData.append("countryImage", file);
+
+        const config = {
+            headers: { "content-type": "multipart/form-data" },
+        };
+
+        await fetch("http://localhost:3001/countries", {
+            method: "POST",
+            body: formData,
+            headers: {},
+            redirect: "follow",
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                alert(">> " + JSON.stringify(data));
+            })
+            .catch((error) => {
+                alert(JSON.stringify(error));
+            });
+    };
+
     return (
         <>
             <div className='border pb-5 mt-6'>
@@ -8,32 +42,34 @@ const NationSettings = () => {
                     <b>Nation Settings</b>
                 </div>
 
-                <div className='pl-4 pr-4 pt-4'>
+                <form className='pl-4 pr-4 pt-4' onSubmit={handleSubmit}>
                     <div className="form-row flex flex-col md:flex-row lg:flex-row xl:flex-row gap-5 pb-5 justify-between">
                         <div className="form-group w-full">
-                            <label htmlFor="input1" className="form-label">Nation Name</label>
+                            <label htmlFor="countryName" className="form-label">Nation Name</label>
                             <input
-                                id="input1"
+                                id="countryName"
+                                name='countryName'
                                 type="text"
-                                placeholder="Name.."
+                                onChange={()=>setCountryName(e.target.name)}
+                                placeholder="Nation Name.."
                                 className="form-input mt-3"
                             />
                         </div>
 
                         <div className="form-group w-full">
-                            <label htmlFor="input1" className="form-label">National Flag</label>
+                            <label htmlFor="countryImage" className="form-label">National Flag</label>
                             <input
-                                id="input1"
+                                id="countryImage"
+                                name='countryImage'
                                 type="file"
-                                placeholder="Overall.."
                                 className="form-input mt-3"
                             />
                         </div>
                     </div>
                     <div className="">
-                        <button className="btn">Upload & Save</button>
+                        <button className="btn" type='submit'>Upload & Save</button>
                     </div>
-                </div>
+                </form>
             </div>
         </>
     )
