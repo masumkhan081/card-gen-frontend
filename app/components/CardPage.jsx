@@ -115,14 +115,21 @@ const CardPage = () => {
           </div> */}
 
           <div className="flex items-center justify-center gap-3 m-0 bg-transparent m-10">
-            <Image
-              src={playerImage ? URL.createObjectURL(playerImage) : player}
-              alt={playerName || 'Player Image'}
-              layout="intrinsic"
-              width={296.34}
-              height={385}
-              className="object-contain"
-            />
+            {playerImage ?
+              (<Image
+                src={playerImage ? URL.createObjectURL(playerImage) : ''}
+                alt={playerName || ''}
+                layout="intrinsic"
+                width={296.34}
+                height={385}
+                className="object-contain"
+              />)
+              :
+              (
+                ''
+              )
+            }
+
           </div>
 
 
@@ -325,8 +332,16 @@ const CardPage = () => {
               color: 'rgb(250, 250, 250)'
             }}
           >
+            {nation ?
+              (
+                <div className=" bg-transparent text-[14px]"><Image src={nation} height={18.13} width={26} /></div>
+              )
+              :
+              (
+                ''
+              )
+            }
 
-            <div className=" bg-transparent text-[14px]"><Image src='/nation/argentina.svg' height={18.13} width={26} /></div>
             <div className=" bg-transparent text-[14px]"><Image src='/nation/argentina.svg' height={18.13} width={26} /></div>
           </div>
 

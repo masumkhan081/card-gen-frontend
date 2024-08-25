@@ -1,8 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 const NationSettings = () => {
+  // Base URL
+  const BaseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
   const [countryName, setCountryName] = useState("");
+  const fileInputRef = useRef(null);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -10,27 +14,25 @@ const NationSettings = () => {
     let formData = new FormData();
     formData.append("countryName", countryName);
 
-    var fileInput = document.getElementById("countryImage");
-    var file = fileInput.files[0];
-    formData.append("countryImage", file);
+    const file = fileInputRef.current.files[0];
+    if (file) {
+      formData.append("countryImage", file);
+    }
 
-    const config = {
-      headers: { "content-type": "multipart/form-data" },
-    };
-
-    await fetch("http://localhost:5000/countries", {
-      method: "POST",
-      body: formData,
-      headers: {},
-      redirect: "follow",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        alert(">> " + JSON.stringify(data));
-      })
-      .catch((error) => {
-        alert(JSON.stringify(error));
+    try {
+      const response = await fetch(`${BaseURL}/countries`, {
+        method: "POST",
+        body: formData,
+        headers: { "content-type": "multipart/form-data" },
+        redirect: "follow",
       });
+
+      const data = await response.json();
+      alert(">> " + JSON.stringify(data));
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred while uploading the data.");
+    }
   };
 
   return (
@@ -65,6 +67,7 @@ const NationSettings = () => {
                 id="countryImage"
                 name="countryImage"
                 type="file"
+                ref={fileInputRef}
                 className="form-input mt-3"
               />
             </div>

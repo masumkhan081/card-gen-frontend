@@ -1,9 +1,10 @@
 "use client";
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { playerNameAtom, playerImageAtom, overallAtom, rarityAtom, nationAtom, leagueAtom } from '../../Atom/GlobalStates';
+import { playerNameAtom, playerImageAtom, overallAtom, rarityAtom, leagueAtom, countriesAtom, nationAtom } from '../../Atom/GlobalStates';
 import League from '@/app/components/json/league.json';
 import Nation from '@/app/components/json/nation.json';
+
 
 const PrimaryDetails = () => {
     const [playerName, setPlayerName] = useAtom(playerNameAtom);
@@ -12,6 +13,31 @@ const PrimaryDetails = () => {
     const [rarity, setRarity] = useAtom(rarityAtom);
     const [nation, setNation] = useAtom(nationAtom);
     const [league, setLeague] = useAtom(leagueAtom);
+    const [countries, setCountries] = useAtom(countriesAtom);
+
+
+    // Base Url
+
+    const BaseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+
+    // Fetch country list
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${BaseURL}/countries/all`);
+                const result = await response.json();
+                // Access the nested data array
+                setCountries(result.data.data); // Correctly set countries to the inner data array
+            } catch (error) {
+                console.error('Error fetching the countries:', error);
+            }
+        };
+    
+        fetchData();
+    }, []);
+
+
 
     return (
         <>
@@ -93,11 +119,17 @@ const PrimaryDetails = () => {
                                 value={nation}
                                 onChange={(e) => setNation(e.target.value)}
                             >
-                                {Nation.map(nation => (
-                                    <option key={nation.value} value={nation.value}>
-                                        {nation.label}
-                                    </option>
-                                ))}
+                                <option value=''>Select Country</option>
+                                {countries && countries.length > 0 ? (
+                                    countries.map(country => (
+                                        <option key={country.id} value={country.image}>
+                                            {country.countryName}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="">No Options Available</option>
+                                )}
+
                             </select>
                         </div>
 
