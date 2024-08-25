@@ -194,7 +194,7 @@ const PhysicalFitness = () => {
                     </div>
                     <div className="form-row flex flex-col md:flex-row lg:flex-row xl:flex-row gap-0 pb-5 md:gap-5 lg:gap-5 xl:gap-5 justify-between">
                         <div className="w-full lg:w-1/2 md:w-1/2 xl:w-1/2 form-row flex flex-row gap-2 lg:gap-1 pb-5 justify-between">
-                            {['High', 'Medium', 'Low'].map((rate) => (
+                            {['H', 'M', 'L'].map((rate) => (
                                 <div className="form-group w-full" key={rate}>
                                     <button
                                         className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
@@ -210,7 +210,7 @@ const PhysicalFitness = () => {
                         <label className="form-label w-1/2 block lg:hidden md:hidden pb-0">Defensive Workrate</label>
 
                         <div className="w-full lg:w-1/2 md:w-1/2 xl:w-1/2 form-row flex flex-row gap-2 lg:gap-1 pb-5 justify-between">
-                            {['High', 'Medium', 'Low'].map((rate) => (
+                            {['H', 'M', 'L'].map((rate) => (
                                 <div className="form-group w-full" key={rate}>
                                     <button
                                         className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"

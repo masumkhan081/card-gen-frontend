@@ -31,3 +31,4 @@ export const defensiveAtom = atom('');
 // States for tacticks
 export const positionsAtom = atom('');
 export const alternatepositionAtom = atom([]);
+export const playstylesAtom = atom([]);

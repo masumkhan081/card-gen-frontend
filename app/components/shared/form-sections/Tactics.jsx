@@ -1,7 +1,7 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image'
 import React, { useState } from 'react'
-import { alternatepositionAtom, positionsAtom } from '../../Atom/GlobalStates';
+import { alternatepositionAtom, playstylesAtom, positionsAtom } from '../../Atom/GlobalStates';
 
 const Tactics = () => {
 
@@ -9,6 +9,7 @@ const Tactics = () => {
 
     const [primaryPosition, setPrimaryPosition] = useAtom(positionsAtom);
     const [alternatePositions, setAlternatePositions] = useAtom(alternatepositionAtom);
+    const [selectedButtons, setSelectedButtons] = useAtom(playstylesAtom);
 
     const handlePrimaryClick = (position) => {
         setPrimaryPosition(position);
@@ -51,8 +52,7 @@ const Tactics = () => {
 
     ///////////////
 
-    const [selectedButtons, setSelectedButtons] = useState([]);
-
+   
     const handleButtonClick = (playStyle) => {
         if (selectedButtons.includes(playStyle)) {
             // Deselect if already selected
@@ -426,7 +426,7 @@ const Tactics = () => {
                                                         width={16}
                                                         height={16}
                                                     />
-                                                    {name.replace(/^\w/, c => c.toUpperCase())}
+                                                    {name}
                                                 </button>
                                             </div>
                                         ))}
