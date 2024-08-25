@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from 'react';
 import { useAtom } from 'jotai';
-import { playerNameAtom, playerImageAtom, overallAtom, rarityAtom, leagueAtom, countriesAtom, nationAtom } from '../../Atom/GlobalStates';
+import { playerNameAtom, playerImageAtom, overallAtom, rarityAtom, leagueAtom, countriesAtom, nationAtom, raritiesAtom, leaguesAtom } from '../../Atom/GlobalStates';
 import League from '@/app/components/json/league.json';
 import Nation from '@/app/components/json/nation.json';
 
@@ -13,12 +13,39 @@ const PrimaryDetails = () => {
     const [rarity, setRarity] = useAtom(rarityAtom);
     const [nation, setNation] = useAtom(nationAtom);
     const [league, setLeague] = useAtom(leagueAtom);
+
     const [countries, setCountries] = useAtom(countriesAtom);
+    const [rarities, setRarities] = useAtom(raritiesAtom);
+    const [leagues, setLeagues] = useAtom(leaguesAtom);
 
 
     // Base Url
 
     const BaseURL = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+    // Fetch rarity list
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${BaseURL}/cards/all`);
+                const result = await response.json();
+                // Access the nested data array
+                setRarities(result.data.data); // Correctly set countries to the inner data array
+
+
+
+                setRarity((result.data.data)[0].image); // Set default value to the first item's value
+
+
+                console.log('Success');
+
+            } catch (error) {
+                console.error('Error fetching the countries:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
 
     // Fetch country list
@@ -29,13 +56,33 @@ const PrimaryDetails = () => {
                 const result = await response.json();
                 // Access the nested data array
                 setCountries(result.data.data); // Correctly set countries to the inner data array
+                setNation((result.data.data)[0].image);
             } catch (error) {
                 console.error('Error fetching the countries:', error);
             }
         };
-    
+
         fetchData();
     }, []);
+
+
+    // Fetch leagues list
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(`${BaseURL}/leagues/all`);
+                const result = await response.json();
+                // Access the nested data array
+                setLeagues(result.data.data); // Correctly set countries to the inner data array
+                setLeague((result.data.data)[0].image);
+            } catch (error) {
+                console.error('Error fetching the countries:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
+
 
 
 
@@ -101,11 +148,18 @@ const PrimaryDetails = () => {
                                 className="form-input mt-3"
                                 value={rarity}
                                 onChange={(e) => setRarity(e.target.value)}
+
                             >
-                                <option value="">Select Rarity..</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
+
+                                {rarities && rarities.length > 0 ? (
+                                    rarities.map(rarity => (
+                                        <option key={rarity.id} value={rarity.image}>
+                                            {rarity.cardName}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="">No Options Available</option>
+                                )}
                             </select>
                         </div>
                     </div>
@@ -119,7 +173,7 @@ const PrimaryDetails = () => {
                                 value={nation}
                                 onChange={(e) => setNation(e.target.value)}
                             >
-                                <option value=''>Select Country</option>
+
                                 {countries && countries.length > 0 ? (
                                     countries.map(country => (
                                         <option key={country.id} value={country.image}>
@@ -141,11 +195,15 @@ const PrimaryDetails = () => {
                                 value={league}
                                 onChange={(e) => setLeague(e.target.value)}
                             >
-                                {League.map(league => (
-                                    <option key={league.value} value={league.value}>
-                                        {league.label}
-                                    </option>
-                                ))}
+                                {leagues && leagues.length > 0 ? (
+                                    leagues.map(league => (
+                                        <option key={league.id} value={league.image}>
+                                            {league.leagueName}
+                                        </option>
+                                    ))
+                                ) : (
+                                    <option value="">No Options Available</option>
+                                )}
                             </select>
                         </div>
                     </div>

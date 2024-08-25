@@ -22,7 +22,7 @@ const MainCardSettings = () => {
         await fetch("http://localhost:5000/cards", {
             method: "POST",
             body: formData,
-            headers: config.headers,
+            headers: {},
             redirect: "follow",
         })
             .then((res) => res.json())
@@ -48,7 +48,6 @@ const MainCardSettings = () => {
                             <input
                                 id="cardName"
                                 name="cardName"
-                                value={cardName}
                                 onChange={(e) => setCardName(e.target.value)}
                                 type="text"
                                 placeholder="Card Name.."

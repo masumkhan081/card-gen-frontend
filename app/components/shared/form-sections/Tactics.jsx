@@ -1,7 +1,107 @@
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 
 const Tactics = () => {
+
+    const [primaryPosition, setPrimaryPosition] = useState(null);
+    const [alternatePositions, setAlternatePositions] = useState([]);
+
+    const handlePrimaryClick = (position) => {
+        setPrimaryPosition(position);
+        // If the new primary position is in the alternate positions, remove it
+        setAlternatePositions((prev) => prev.filter((p) => p !== position));
+    };
+
+    const handleAlternateClick = (position) => {
+        setAlternatePositions((prev) => {
+            if (prev.includes(position)) {
+                // Remove the position if it is already selected
+                return prev.filter((item) => item !== position);
+            } else if (prev.length < 3 && position !== primaryPosition) {
+                // Add the position if less than 3 are selected and it's not the primary position
+                return [...prev, position];
+            } else if (prev.length === 3 && position !== primaryPosition) {
+                // If 3 positions are already selected, remove the first one (FIFO) and add the new one
+                return [...prev.slice(1), position];
+            }
+            return prev; // Do nothing if it's the primary position
+        });
+    };
+
+    const isSelected = (position, type) => {
+        if (type === 'primary') {
+            return position === primaryPosition;
+        } else if (type === 'alternate') {
+            return alternatePositions.includes(position);
+        }
+        return false;
+    };
+
+    const buttonStyles = (type, isSelected) => ({
+        backgroundColor: isSelected ? (type === 'primary' ? '#1E73BE' : '#1E73BE') : 'white',
+        color: isSelected ? 'white' : 'black',
+        borderColor: isSelected ? (type === 'primary' ? '#1E73BE' : '#1E73BE') : 'gray',
+        pointerEvents: type === 'primary' && isSelected ? 'none' : 'auto', // Prevent clicking the primary position
+    });
+
+
+    ///////////////
+
+    const [selectedButtons, setSelectedButtons] = useState([]);
+
+    const handleButtonClick = (playStyle) => {
+        if (selectedButtons.includes(playStyle)) {
+            // Deselect if already selected
+            setSelectedButtons(selectedButtons.filter(style => style !== playStyle));
+        } else {
+            if (selectedButtons.length < 4) {
+                // Select if less than 4 are selected
+                setSelectedButtons([...selectedButtons, playStyle]);
+            } else {
+                // If 4 are selected, remove the first one and add the new one
+                setSelectedButtons([...selectedButtons.slice(1), playStyle]);
+            }
+        }
+    };
+
+    const playStyles = [
+        { name: 'Acrobatic', icon: '/icons/acrobatic.svg' },
+        { name: 'Aerial', icon: '/icons/aerial.svg' },
+        { name: 'Anticipate', icon: '/icons/anticipate.svg' },
+        { name: 'Block', icon: '/icons/block.svg' },
+        { name: 'Bruiser', icon: '/icons/bruiser.svg' },
+        { name: 'Chip Shot', icon: '/icons/chipshot.svg' },
+        { name: 'Cross Claimer', icon: '/icons/crossclimer.svg' },
+        { name: 'Dead Ball', icon: '/icons/deadball.svg' },
+        { name: 'Far Throw', icon: '/icons/farthrow.svg' },
+        { name: 'Finesse Shot', icon: '/icons/finesseshot.svg' },
+        { name: 'First Touch', icon: '/icons/firsttouch.svg' },
+        { name: 'Flair', icon: '/icons/flair.svg' },
+        { name: 'Footwork', icon: '/icons/footwork.svg' },
+        { name: 'Incisive Pass', icon: '/icons/incisivepass.svg' },
+        { name: 'Intercept', icon: '/icons/intercept.svg' },
+        { name: 'Jockey', icon: '/icons/jockey.svg' },
+        { name: 'Long Ball Pass', icon: '/icons/longballpass.svg' },
+        { name: 'Long Throw', icon: '/icons/longthrow.svg' },
+        { name: 'Pinged Pass', icon: '/icons/pingedpass.svg' },
+        { name: 'Power Header', icon: '/icons/powerheader.svg' },
+        { name: 'Power Shot', icon: '/icons/powershot.svg' },
+        { name: 'Press Proven', icon: '/icons/pressproven.svg' },
+        { name: 'Quick Step', icon: '/icons/quickstep.svg' },
+        { name: 'Rapid', icon: '/icons/rapid.svg' },
+        { name: 'Relentless', icon: '/icons/relentless.svg' },
+        { name: 'Rush Out', icon: '/icons/rushout.svg' },
+        { name: 'Slide Tackle', icon: '/icons/slidetackle.svg' },
+        { name: 'Technical', icon: '/icons/technical.svg' },
+        { name: 'Tiki Taka', icon: '/icons/tikitaka.svg' },
+        { name: 'Trickstar', icon: '/icons/trickstar.svg' },
+        { name: 'Trivela', icon: '/icons/trivela.svg' },
+        { name: 'Whipped Pass', icon: '/icons/whippedpass.svg' },
+        { name: 'Unknown1', icon: '/icons/unknown.svg' },
+        { name: 'Unknown2', icon: '/icons/unknown.svg' }
+        // Add other play styles here if needed...
+    ];
+
     return (
         <>
             <div className='border pb-5 rounded-[8px] border-selection-color mt-6'>
@@ -13,108 +113,152 @@ const Tactics = () => {
                     <div className="form-row flex flex-col md:flex-row lg:flex-row xl:flex-row gap-5 pb-5 justify-between">
                         <div className="form-group w-full">
                             <label htmlFor="input1" className="form-label">Position</label>
-                            <div className=" w-full flex flex-col gap-0 pb-5 md:gap-5 lg:gap-5 xl:gap-5 justify-between">
-                                <div className="w-full flex flex-row gap-5  justify-between">
+                            <div className="w-full flex flex-col gap-0 pb-5 md:gap-5 lg:gap-5 xl:gap-5 justify-between">
+                                <div className="w-full flex flex-row gap-5 justify-between">
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('LW', 'primary'))}
+                                            onClick={() => handlePrimaryClick('LW')}
+                                        >
                                             LW
                                         </button>
-
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('ST', 'primary'))}
+                                            onClick={() => handlePrimaryClick('ST')}
+                                        >
                                             ST
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('RW', 'primary'))}
+                                            onClick={() => handlePrimaryClick('RW')}
+                                        >
                                             RW
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="w-full flex flex-row gap-5  justify-between">
+                                <div className="w-full flex flex-row gap-5 justify-between">
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('LM', 'primary'))}
+                                            onClick={() => handlePrimaryClick('LM')}
+                                        >
                                             LM
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('CF', 'primary'))}
+                                            onClick={() => handlePrimaryClick('CF')}
+                                        >
                                             CF
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('RM', 'primary'))}
+                                            onClick={() => handlePrimaryClick('RM')}
+                                        >
                                             RM
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="w-full flex flex-row gap-5  justify-between">
+                                <div className="w-full flex flex-row gap-5 justify-between">
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('CM', 'primary'))}
+                                            onClick={() => handlePrimaryClick('CM')}
+                                        >
                                             CM
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('CAM', 'primary'))}
+                                            onClick={() => handlePrimaryClick('CAM')}
+                                        >
                                             CAM
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('CDM', 'primary'))}
+                                            onClick={() => handlePrimaryClick('CDM')}
+                                        >
                                             CDM
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="w-full flex flex-row gap-5  justify-between">
+                                <div className="w-full flex flex-row gap-5 justify-between">
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('LWB', 'primary'))}
+                                            onClick={() => handlePrimaryClick('LWB')}
+                                        >
                                             LWB
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('CB', 'primary'))}
+                                            onClick={() => handlePrimaryClick('CB')}
+                                        >
                                             CB
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('RWB', 'primary'))}
+                                            onClick={() => handlePrimaryClick('RWB')}
+                                        >
                                             RWB
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="w-full flex flex-row gap-5  justify-between">
+                                <div className="w-full flex flex-row gap-5 justify-between">
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('LB', 'primary'))}
+                                            onClick={() => handlePrimaryClick('LB')}
+                                        >
                                             LB
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('GK', 'primary'))}
+                                            onClick={() => handlePrimaryClick('GK')}
+                                        >
                                             GK
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('primary', isSelected('RB', 'primary'))}
+                                            onClick={() => handlePrimaryClick('RB')}
+                                        >
                                             RB
                                         </button>
                                     </div>
@@ -122,108 +266,152 @@ const Tactics = () => {
                             </div>
 
                             <label htmlFor="input1" className="form-label">Alternative Positions</label>
-                            <div className=" w-full flex flex-col gap-0 pb-5 md:gap-5 lg:gap-5 xl:gap-5 justify-between">
-                                <div className="w-full flex flex-row gap-5  justify-between">
+                            <div className="w-full flex flex-col gap-0 pb-5 md:gap-5 lg:gap-5 xl:gap-5 justify-between">
+                                <div className="w-full flex flex-row gap-5 justify-between">
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('LW', 'alternate'))}
+                                            onClick={() => handleAlternateClick('LW')}
+                                        >
                                             LW
                                         </button>
-
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('ST', 'alternate'))}
+                                            onClick={() => handleAlternateClick('ST')}
+                                        >
                                             ST
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('RW', 'alternate'))}
+                                            onClick={() => handleAlternateClick('RW')}
+                                        >
                                             RW
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="w-full flex flex-row gap-5  justify-between">
+                                <div className="w-full flex flex-row gap-5 justify-between">
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('LM', 'alternate'))}
+                                            onClick={() => handleAlternateClick('LM')}
+                                        >
                                             LM
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('CF', 'alternate'))}
+                                            onClick={() => handleAlternateClick('CF')}
+                                        >
                                             CF
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('RM', 'alternate'))}
+                                            onClick={() => handleAlternateClick('RM')}
+                                        >
                                             RM
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="w-full flex flex-row gap-5  justify-between">
+                                <div className="w-full flex flex-row gap-5 justify-between">
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('CM', 'alternate'))}
+                                            onClick={() => handleAlternateClick('CM')}
+                                        >
                                             CM
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('CAM', 'alternate'))}
+                                            onClick={() => handleAlternateClick('CAM')}
+                                        >
                                             CAM
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('CDM', 'alternate'))}
+                                            onClick={() => handleAlternateClick('CDM')}
+                                        >
                                             CDM
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="w-full flex flex-row gap-5  justify-between">
+                                <div className="w-full flex flex-row gap-5 justify-between">
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('LWB', 'alternate'))}
+                                            onClick={() => handleAlternateClick('LWB')}
+                                        >
                                             LWB
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('CB', 'alternate'))}
+                                            onClick={() => handleAlternateClick('CB')}
+                                        >
                                             CB
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('RWB', 'alternate'))}
+                                            onClick={() => handleAlternateClick('RWB')}
+                                        >
                                             RWB
                                         </button>
                                     </div>
                                 </div>
 
-                                <div className="w-full flex flex-row gap-5  justify-between">
+                                <div className="w-full flex flex-row gap-5 justify-between">
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('LB', 'alternate'))}
+                                            onClick={() => handleAlternateClick('LB')}
+                                        >
                                             LB
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('GK', 'alternate'))}
+                                            onClick={() => handleAlternateClick('GK')}
+                                        >
                                             GK
                                         </button>
                                     </div>
                                     <div className="w-full">
-
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
+                                        <button
+                                            className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
+                                            style={buttonStyles('alternate', isSelected('RB', 'alternate'))}
+                                            onClick={() => handleAlternateClick('RB')}
+                                        >
                                             RB
                                         </button>
                                     </div>
@@ -231,303 +419,8 @@ const Tactics = () => {
                             </div>
                         </div>
 
-                        {/* PlayStyles */}
-                        <div className="form-group w-full">
-
-                            <label htmlFor="input1" className="form-label">PlayStyles+</label>
-                            <div className=" w-full flex flex-col gap-0 pb-5 md:gap-5 lg:gap-5 xl:gap-5 justify-between">
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/acrobatic.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Acrobatic
-                                        </button>
-
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/aerial.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Aerial
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/anticipate.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Anticipate
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/block.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Block
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/bruiser.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Bruiser
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/chipshot.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Chip Shot
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/crossclimer.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Cross Claimer
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/deadball.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Dead Ball
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/farthrow.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Far Throw
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/finesseshot.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Finesse Shot
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/firsttouch.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            First Touch
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/flair.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Flair
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/footwork.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Footwork
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/incisivepass.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Incisive Pass
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/intercept.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Intercept
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/jockey.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Jockey
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/longballpass.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Long Ball Pass
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/longthrow.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Long Throw
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/pingedpass.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Pinged Pass
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/powerheader.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Power Header
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/powershot.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Power Shot
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/pressproven.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Press Proven
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/quickstep.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Quick Step
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/rapid.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Rapid
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/relentless.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Relentless
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/rushout.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Rush Out
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/slidetackle.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Slide Tackle
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/technical.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Technical
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/tikitaka.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Tiki Taka
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/trickstar.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Trickstar
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/trivela.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Trivela
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/whippedpass.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Whipped Pass
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/unknown.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Unknown1
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/unknown.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Unknown1
-                                        </button>
-                                    </div>
-
-                                </div>
-
-                                <div className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1 justify-between">
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/unknown.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Unknown1
-                                        </button>
-                                    </div>
-                                    <div className="w-full">
-                                        <button className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400">
-                                            <Image src="/icons/unknown.svg" alt="Icon" className="h-6 w-6 mr-2 filter-[color] " width={16} height={16} />
-                                            Unknown1
-                                        </button>
-                                    </div>
-
-                                </div>
-
-
-                            </div>
-                        </div>
+                        {/* playstyle */}
+                       
                     </div>
                 </div>
             </div>
@@ -535,4 +428,4 @@ const Tactics = () => {
     )
 }
 
-export default Tactics
+export default Tactics;

@@ -20,6 +20,8 @@ const CardPage = () => {
   const [nation] = useAtom(nationAtom);
   const [league] = useAtom(leagueAtom);
 
+  const card = rarity;
+
 
   const small_diamond = 'data:image/svg+xml,%3Csvg%20width%3D%2228.6%22%20height%3D%2226.48%22%20viewBox%3D%220%200%202445%202274%22%20fill%3D%22none%22%20xmlns%3D%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M596.5%2025L32%20890L1217.5%202235.5L2413.5%20890L1875%2025H596.5Z%22%20fill%3D%22white%22%20stroke%3D%22%23FF0000%22%20stroke-width%3D%2250%22/%3E%3C/svg%3E';
 
@@ -60,11 +62,15 @@ const CardPage = () => {
           ref={cardPictureRef}
           className="relative w-[296.34px] h-[385px] bg-transparent mt-6"
           style={{
-            backgroundImage: 'url(/Rarity-Gallery/1.png)',
+            backgroundImage: `url(${rarity})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
+
+
+
+
 
 
           {/* header text */}
@@ -332,33 +338,35 @@ const CardPage = () => {
               color: 'rgb(250, 250, 250)'
             }}
           >
-            {nation ?
-              (
-                <div className=" bg-transparent text-[14px]"><Image src={nation} height={18.13} width={26} /></div>
-              )
-              :
-              (
-                ''
-              )
-            }
+            {nation ? (
+              <div className="bg-transparent w-[26px] h-[18.13px] flex items-center justify-center text-[14px]">
+                <Image src={nation} width={26} height={18.13} alt='nation'/>
+              </div>
+            ) : null}
 
-            <div className=" bg-transparent text-[14px]"><Image src='/nation/argentina.svg' height={18.13} width={26} /></div>
+            {league ? (
+              <div className="bg-transparent w-[26px] h-[18.13px] flex items-center justify-center text-[14px]">
+                <Image src={league} width={26} height={18.13} alt='league'/>
+              </div>
+            ) : null}
+
+
+
           </div>
-
-
-
-
-
-
 
 
         </div>
 
+        <div className='flex flex-row gap-5'>
+          <button onClick={handleDownload} className="mt-4 p-2 bg-selection-color text-white rounded">
+            Download
+          </button>
+          <button onClick={handleDownload} className="mt-4 p-2 bg-transparent text-selection-color rounded">
+            Save  & Download
+          </button>
+        </div>
 
 
-        <button onClick={handleDownload} className="mt-4 p-2 bg-selection-color text-white rounded">
-          Download
-        </button>
       </div>
       <div className="lg:w-2/3 md:w-full xl:w-2/3 h-full pt-6 pb-6 pr-2 pl-2">
         <Tab tabs={[

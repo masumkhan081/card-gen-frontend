@@ -23,7 +23,7 @@ const NationSettings = () => {
       const response = await fetch(`${BaseURL}/countries`, {
         method: "POST",
         body: formData,
-        headers: { "content-type": "multipart/form-data" },
+        headers: {},
         redirect: "follow",
       });
 
