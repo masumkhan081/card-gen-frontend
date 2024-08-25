@@ -1,10 +1,14 @@
+import { useAtom } from 'jotai';
 import Image from 'next/image'
 import React, { useState } from 'react'
+import { alternatepositionAtom, positionsAtom } from '../../Atom/GlobalStates';
 
 const Tactics = () => {
 
-    const [primaryPosition, setPrimaryPosition] = useState(null);
-    const [alternatePositions, setAlternatePositions] = useState([]);
+
+
+    const [primaryPosition, setPrimaryPosition] = useAtom(positionsAtom);
+    const [alternatePositions, setAlternatePositions] = useAtom(alternatepositionAtom);
 
     const handlePrimaryClick = (position) => {
         setPrimaryPosition(position);
@@ -64,42 +68,25 @@ const Tactics = () => {
         }
     };
 
-    const playStyles = [
-        { name: 'Acrobatic', icon: '/icons/acrobatic.svg' },
-        { name: 'Aerial', icon: '/icons/aerial.svg' },
-        { name: 'Anticipate', icon: '/icons/anticipate.svg' },
-        { name: 'Block', icon: '/icons/block.svg' },
-        { name: 'Bruiser', icon: '/icons/bruiser.svg' },
-        { name: 'Chip Shot', icon: '/icons/chipshot.svg' },
-        { name: 'Cross Claimer', icon: '/icons/crossclimer.svg' },
-        { name: 'Dead Ball', icon: '/icons/deadball.svg' },
-        { name: 'Far Throw', icon: '/icons/farthrow.svg' },
-        { name: 'Finesse Shot', icon: '/icons/finesseshot.svg' },
-        { name: 'First Touch', icon: '/icons/firsttouch.svg' },
-        { name: 'Flair', icon: '/icons/flair.svg' },
-        { name: 'Footwork', icon: '/icons/footwork.svg' },
-        { name: 'Incisive Pass', icon: '/icons/incisivepass.svg' },
-        { name: 'Intercept', icon: '/icons/intercept.svg' },
-        { name: 'Jockey', icon: '/icons/jockey.svg' },
-        { name: 'Long Ball Pass', icon: '/icons/longballpass.svg' },
-        { name: 'Long Throw', icon: '/icons/longthrow.svg' },
-        { name: 'Pinged Pass', icon: '/icons/pingedpass.svg' },
-        { name: 'Power Header', icon: '/icons/powerheader.svg' },
-        { name: 'Power Shot', icon: '/icons/powershot.svg' },
-        { name: 'Press Proven', icon: '/icons/pressproven.svg' },
-        { name: 'Quick Step', icon: '/icons/quickstep.svg' },
-        { name: 'Rapid', icon: '/icons/rapid.svg' },
-        { name: 'Relentless', icon: '/icons/relentless.svg' },
-        { name: 'Rush Out', icon: '/icons/rushout.svg' },
-        { name: 'Slide Tackle', icon: '/icons/slidetackle.svg' },
-        { name: 'Technical', icon: '/icons/technical.svg' },
-        { name: 'Tiki Taka', icon: '/icons/tikitaka.svg' },
-        { name: 'Trickstar', icon: '/icons/trickstar.svg' },
-        { name: 'Trivela', icon: '/icons/trivela.svg' },
-        { name: 'Whipped Pass', icon: '/icons/whippedpass.svg' },
-        { name: 'Unknown1', icon: '/icons/unknown.svg' },
-        { name: 'Unknown2', icon: '/icons/unknown.svg' }
-        // Add other play styles here if needed...
+    const buttonPairs = [
+        ["acrobatic", "aerial"],
+        ["anticipate", "block"],
+        ["bruiser", "chipshot"],
+        ["crossclimer", "deadball"],
+        ["farthrow", "finesseshot"],
+        ["firsttouch", "flair"],
+        ["footwork", "incisivepass"],
+        ["intercept", "jockey"],
+        ["longballpass", "longthrow"],
+        ["pingedpass", "powerheader"],
+        ["powershot", "pressproven"],
+        ["quickstep", "rapid"],
+        ["relentless", "rushout"],
+        ["slidetackle", "technical"],
+        ["tikitaka", "trickstar"],
+        ["trivela", "whippedpass"],
+        ["unknown", "unknown"],
+        ["unknown", "unknown"]
     ];
 
     return (
@@ -420,7 +407,34 @@ const Tactics = () => {
                         </div>
 
                         {/* playstyle */}
-                       
+
+                        <div className="form-group w-full">
+                            <label htmlFor="input1" className="form-label">PlayStyles+</label>
+                            <div className="w-full flex flex-col gap-0 pb-5 md:gap-5 lg:gap-5 xl:gap-5">
+                                {buttonPairs.map((pair, rowIndex) => (
+                                    <div key={rowIndex} className="w-full flex flex-col sm:flex-row gap-2 sm:gap-1">
+                                        {pair.map((name, colIndex) => (
+                                            <div key={colIndex} className="w-full sm:w-1/2">
+                                                <button
+                                                    onClick={() => handleButtonClick(name)}
+                                                    className={`form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px] text-black font-300 border-gray-400 ${selectedButtons.includes(name) ? 'bg-selection-color text-white' : ''}`}
+                                                >
+                                                    <Image
+                                                        src={`/icons/${name}.svg`}
+                                                        alt={`${name} Icon`}
+                                                        className="h-6 w-6 mr-2 filter-[color]"
+                                                        width={16}
+                                                        height={16}
+                                                    />
+                                                    {name.replace(/^\w/, c => c.toUpperCase())}
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
