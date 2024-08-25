@@ -6,12 +6,20 @@ import MainForm from './shared/MainForm';
 import Image from 'next/image';
 import html2canvas from 'html2canvas';
 import CardSettings from './shared/CardSettings';
-
+import { playerNameAtom, playerImageAtom, overallAtom, rarityAtom, nationAtom, leagueAtom } from './Atom/GlobalStates';
+import { useAtom } from 'jotai';
 
 
 const CardPage = () => {
 
-  ////////// test
+
+  const [playerName] = useAtom(playerNameAtom);
+  const [playerImage] = useAtom(playerImageAtom);
+  const [overall] = useAtom(overallAtom);
+  const [rarity] = useAtom(rarityAtom);
+  const [nation] = useAtom(nationAtom);
+  const [league] = useAtom(leagueAtom);
+
 
   const small_diamond = 'data:image/svg+xml,%3Csvg%20width%3D%2228.6%22%20height%3D%2226.48%22%20viewBox%3D%220%200%202445%202274%22%20fill%3D%22none%22%20xmlns%3D%22http://www.w3.org/2000/svg%22%3E%3Cpath%20d%3D%22M596.5%2025L32%20890L1217.5%202235.5L2413.5%20890L1875%2025H596.5Z%22%20fill%3D%22white%22%20stroke%3D%22%23FF0000%22%20stroke-width%3D%2250%22/%3E%3C/svg%3E';
 
@@ -52,7 +60,7 @@ const CardPage = () => {
           ref={cardPictureRef}
           className="relative w-[296.34px] h-[385px] bg-transparent mt-6"
           style={{
-            backgroundImage: 'url(/Rarity-Gallery/2.webp)',
+            backgroundImage: 'url(/Rarity-Gallery/1.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -69,7 +77,10 @@ const CardPage = () => {
               color: 'rgb(250, 250, 250)'
             }}
           >
-            <div className="flex-1 bg-transparent text-[25px] font-bold maxline-1"><center>99</center></div>
+
+            <div className="flex-1 bg-transparent text-[25px] font-bold"><center>{overall}</center></div>
+
+
           </div>
 
           <div
@@ -105,8 +116,8 @@ const CardPage = () => {
 
           <div className="flex items-center justify-center gap-3 m-0 bg-transparent m-10">
             <Image
-              src={player}
-              alt="Player Image"
+              src={playerImage ? URL.createObjectURL(playerImage) : player}
+              alt={playerName || 'Player Image'}
               layout="intrinsic"
               width={296.34}
               height={385}
@@ -158,8 +169,8 @@ const CardPage = () => {
           >
             <div className="w-full h-full flex items-center justify-center bg-transparent">
               <svg width="33.59" height="18.75" viewBox="0 0 33.59 18.75" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width="1" />
-                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="16.1114" font-weight="bold" fill="black" fontFamily='arial'>CB</text>
+                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width=".5" />
+                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="15.1114" font-weight="bold" fill="black" fontFamily='arial'>CB</text>
               </svg>
             </div>
           </div>
@@ -177,8 +188,8 @@ const CardPage = () => {
           >
             <div className="w-full h-full flex items-center justify-center bg-transparent">
               <svg width="33.59" height="18.75" viewBox="0 0 33.59 18.75" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width="1" />
-                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="16.1114" font-weight="bold" fill="black" fontFamily='arial'>CB</text>
+                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width=".5" />
+                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="15.1114" font-weight="bold" fill="black" fontFamily='arial'>CB</text>
               </svg>
             </div>
           </div>
@@ -195,8 +206,8 @@ const CardPage = () => {
           >
             <div className="w-full h-full flex items-center justify-center bg-transparent">
               <svg width="33.59" height="18.75" viewBox="0 0 33.59 18.75" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width="1" />
-                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="16.1114" font-weight="bold" fill="black" fontFamily='arial'>CB</text>
+                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width=".5" />
+                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="15.1114" font-weight="bold" fill="black" fontFamily='arial'>CB</text>
               </svg>
             </div>
           </div>
@@ -216,8 +227,8 @@ const CardPage = () => {
           >
             <div className="w-full h-full flex items-center justify-center bg-transparent">
               <svg width="33.59" height="18.75" viewBox="0 0 33.59 18.75" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width="1" />
-                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="16.1114" font-weight="bold" fill="black" fontFamily='arial'>L</text>
+                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width=".5" />
+                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="15.1114" font-weight="bold" fill="black" fontFamily='arial'>L</text>
               </svg>
             </div>
           </div>
@@ -235,8 +246,8 @@ const CardPage = () => {
           >
             <div className="w-full h-full flex items-center justify-center bg-transparent">
               <svg width="33.59" height="18.75" viewBox="0 0 33.59 18.75" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width="1" />
-                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="16.1114" font-weight="bold" fill="black" fontFamily='arial' >5⭑5</text>
+                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width=".5" />
+                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="15.1114" font-weight="bold" fill="black" fontFamily='arial' >5⭑5</text>
               </svg>
             </div>
           </div>
@@ -253,8 +264,8 @@ const CardPage = () => {
           >
             <div className="w-full h-full flex items-center justify-center bg-transparent">
               <svg width="33.59" height="18.75" viewBox="0 0 33.59 18.75" xmlns="http://www.w3.org/2000/svg">
-                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width="1" />
-                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="16.1114" font-weight="bold" fill="black" fontFamily='arial'>H·L</text>
+                <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width=".5" />
+                <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="15.1114" font-weight="bold" fill="black" fontFamily='arial'>H·L</text>
               </svg>
             </div>
           </div>
@@ -269,38 +280,54 @@ const CardPage = () => {
               color: 'rgb(250, 250, 250)'
             }}
           >
-            <div className="flex-1 bg-transparent text-[19px] font-bold maxline-1"><center>Messi</center></div>
+            <div className="flex-1 bg-transparent text-[19px] font-bold maxline-1"><center>{playerName}</center></div>
           </div>
 
           <div
-            className="h-[58.75px] w-[224px] p-[10px] flex flex-row items-center justify-center gap-1 absolute top-[265px] left-[37px]"
+            className="h-[58.75px] w-[224px] p-[0px] flex flex-row items-center justify-center gap-1 absolute top-[267px] left-[37px]"
             style={{
               pointerEvents: 'none',
               backgroundColor: 'transparent',
-              color: 'rgb(250, 250, 250)'
+              color: 'rgb(250, 250, 250)',
             }}
           >
-            <div className="flex-1 bg-transparent text-[14px]">PAC<br /><center>23</center></div>
-            <div className="flex-1 bg-transparent text-[14px]">SHO<br /><center>23</center></div>
-            <div className="flex-1 bg-transparent text-[14px]">PAS<br /><center>23</center></div>
-            <div className="flex-1 bg-transparent text-[14px]">DRI<br /><center>23</center></div>
-            <div className="flex-1 bg-transparent text-[14px]">DEF<br /><center>23</center></div>
-            <div className="flex-1 bg-transparent text-[14px]">PHY<br /><center>23</center></div>
+            <div className="flex-1 bg-transparent text-[12px]">PAC<br /></div>
+            <div className="flex-1 bg-transparent text-[12px]">SHO<br /></div>
+            <div className="flex-1 bg-transparent text-[12px]">PAS<br /></div>
+            <div className="flex-1 bg-transparent text-[12px]">DRI<br /></div>
+            <div className="flex-1 bg-transparent text-[12px]">DEF<br /></div>
+            <div className="flex-1 bg-transparent text-[12px]">PHY<br /></div>
+          </div>
+
+          <div
+            className="h-[58.75px] w-[224px] p-[0px] flex flex-row items-center justify-center gap-1 absolute top-[285px] left-[39px]"
+            style={{
+              pointerEvents: 'none',
+              backgroundColor: 'transparent',
+              color: 'rgb(250, 250, 250)',
+            }}
+          >
+            <div className="flex-1 bg-transparent text-[12px]">23<br /></div>
+            <div className="flex-1 bg-transparent text-[12px]">23<br /></div>
+            <div className="flex-1 bg-transparent text-[12px]">23<br /></div>
+            <div className="flex-1 bg-transparent text-[12px]">23<br /></div>
+            <div className="flex-1 bg-transparent text-[12px]">23<br /></div>
+            <div className="flex-1 bg-transparent text-[12px]">23<br /></div>
           </div>
 
           {/* images and logo */}
 
           <div
-            className="h-[58.75px] w-[224px] p-[10px] flex flex-row items-center justify-center gap-3 absolute top-[302px] left-[37px]"
+            className="h-[58.75px] w-[224px] p-[10px] flex flex-row items-center justify-center gap-3 absolute top-[314px] left-[37px]"
             style={{
               pointerEvents: 'none',
               backgroundColor: 'transparent',
               color: 'rgb(250, 250, 250)'
             }}
           >
-            
-            <div className=" bg-transparent text-[14px]"><Image src='/nation/argentina.svg' height={18.13} width={26}/></div>
-            <div className=" bg-transparent text-[14px]"><Image src='/nation/argentina.svg' height={18.13} width={26}/></div>
+
+            <div className=" bg-transparent text-[14px]"><Image src='/nation/argentina.svg' height={18.13} width={26} /></div>
+            <div className=" bg-transparent text-[14px]"><Image src='/nation/argentina.svg' height={18.13} width={26} /></div>
           </div>
 
 

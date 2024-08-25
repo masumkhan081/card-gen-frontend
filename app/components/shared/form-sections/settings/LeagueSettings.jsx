@@ -35,8 +35,8 @@ const LeagueSettings = () => {
     return (
 
         <>
-            <div className='border pb-5 mt-6'>
-                <div className='h-12 bg-transparent text-selection-color border-b border-gray-400 flex items-center p-4'>
+            <div className='border pb-5 rounded-[8px] border-selection-color mt-6'>
+                <div className='h-12 bg-transparent text-selection-color border-b border-selection-color flex items-center p-4'>
                     <b>League Settings</b>
                 </div>
 
@@ -49,7 +49,7 @@ const LeagueSettings = () => {
                                 name='leagueName'
                                 type="text"
                                 value={leagueName}
-                                onChange={(e)=>setLeagueName(e.target.value)}
+                                onChange={(e) => setLeagueName(e.target.value)}
                                 placeholder="League Name.."
                                 className="form-input mt-3"
                             />
