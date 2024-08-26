@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useAtom } from 'jotai';
 import { playerNameAtom, playerImageAtom, overallAtom, rarityAtom, leagueAtom, countriesAtom, nationAtom, raritiesAtom, leaguesAtom } from '../../Atom/GlobalStates';
+import { IoMdArrowDropdown } from "react-icons/io";
 
 const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -34,15 +35,18 @@ const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) 
 
             <div
 
-                className="form-input mt-3 cursor-pointer border p-[0.5rem] rounded-[0.375rem] border-gray-400 border-[1px]"
+                className="form-input mt-3 cursor-pointer border p-[0.5rem] rounded-[0.375rem] border-gray-400 border-[1px] text-black"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 {value ? options.find(option => option.value === value)?.label : placeholder}
+
+                <span className="float-right"><IoMdArrowDropdown size={22}/></span>
+
             </div>
 
 
             {isOpen && (
-                <div className="absolute border border-gray-300 mt-2 w-full bg-white z-10">
+                <div className="absolute border border-gray-300 mt-2 w-full bg-white z-10 text-black">
                     <input
                         type="search"
                         placeholder="Search..."
@@ -168,6 +172,7 @@ const PrimaryDetails = () => {
                                 }
                             }}
                         />
+
                     </div>
 
                     <div className="form-group w-full">

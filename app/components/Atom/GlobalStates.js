@@ -41,3 +41,5 @@ export const isSearchResultShowing = atom(false);
 
 
 export const searchResult = atom([]);
+
+export const selectedItemsAtom = atom([]);

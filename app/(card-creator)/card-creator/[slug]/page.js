@@ -1,10 +1,16 @@
-import CardPage from "./components/CardPage.jsx";
+import CardPageSlug from '@/app/components/CardPageSlug';
+import React from 'react'
 
 
-export  function Home() {
+export default function Card({ params }) {
+  const { slug } = params;
+
   return (
     <main className="">
-      <CardPage />
+      <CardPageSlug slug={slug} />
+      {/* <NationSettings/> */}
     </main>
   );
 }
+
+

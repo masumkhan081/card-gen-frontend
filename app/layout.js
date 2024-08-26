@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <CardHeader title={title}/>
+        <CardHeader title={title} />
         {children}
 
       </body>

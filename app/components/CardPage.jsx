@@ -17,7 +17,7 @@ const CardPage = () => {
   const [search, setSearhQ] = useAtom(searchQ);
 
   const [searchResults, setSearResults] = useAtom(searchResult);
-  const [isShowing, setIsShowing] = useAtom(isSearchResultShowing);
+  const [isShowing, setIsShowing] = useState(false);
 
 
   const [playerName] = useAtom(playerNameAtom);
@@ -67,7 +67,7 @@ const CardPage = () => {
       }
     };
 
-    if (search.length > 2) {
+    if (search.length > 1) {
       fetchData();
     }
   }, [search]);
@@ -216,22 +216,12 @@ const CardPage = () => {
         <SearchBox
           chgHandler={(e) => setSearhQ(e.target.value)}
           search={search}
+          isShowing={isShowing}
+          searchResults={searchResults}
+          setIsShowing={setIsShowing}
         />
 
-        {isShowing && (
-          <div className='absolute z-10 top-[60px] bg-white shadow-lg rounded'>
-            <ul className='p-4'>
-              {searchResults.map((item) => (
-                <li
-                  key={item.id}
-                  onClick={() => handleSelectPlayer(item)}
-                  className='cursor-pointer hover:bg-gray-200 p-2 rounded'>
-                  {item.playerName}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        
 
 
         <div id='card-picture' ref={cardPictureRef} className="relative w-[280px] h-[391.453px] mb-[20px] bg-transparent">
@@ -397,10 +387,6 @@ const CardPage = () => {
             ) : null}
 
           </div>
-
-
-
-
 
 
         </div>
