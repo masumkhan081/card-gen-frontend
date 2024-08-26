@@ -1,8 +1,8 @@
 import { useAtom } from 'jotai'
 import React from 'react'
-import { 
-    atackingAtom, defAtom, defensiveAtom, driAtom, footAtom, pacAtom, pasAtom, phyAtom, shoAtom, 
-    skillmovesAtom, weakAtom 
+import {
+    atackingAtom, defAtom, defensiveAtom, driAtom, footAtom, pacAtom, pasAtom, phyAtom, shoAtom,
+    skillmovesAtom, weakAtom
 } from '../../Atom/GlobalStates'
 
 const PhysicalFitness = () => {
@@ -140,7 +140,7 @@ const PhysicalFitness = () => {
                             </div>
 
                             <div className="form-group w-full">
-                                <br/>
+                                <br />
                                 <button
                                     className="form-button mt-3 cursor-pointer w-full flex items-center justify-center border-[1px]"
                                     style={buttonStyles(foot === 'R')}

@@ -32,3 +32,12 @@ export const defensiveAtom = atom('');
 export const positionsAtom = atom('');
 export const alternatepositionAtom = atom([]);
 export const playstylesAtom = atom([]);
+
+
+// seearch
+
+export const searchQ = atom("");
+export const isSearchResultShowing = atom(false);
+
+
+export const searchResult = atom([]);

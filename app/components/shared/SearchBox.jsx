@@ -1,16 +1,18 @@
-import React from 'react'
+import React, {  } from "react";
 
-const SearchBox = () => {
-    return (
-        <>
-            <input
-                type="search"
-                id="search"
-                placeholder="Search..."
-                className='mb-7'
-            />
-        </>
-    )
-}
+const SearchBox = ({ search, chgHandler }) => {
+  return (
+    <>
+      <input
+        type="search"
+        id="search"
+        placeholder="Search..."
+        className="mb-7"
+        value={search}
+        onChange={chgHandler}
+      />
+    </>
+  );
+};
 
-export default SearchBox
+export default SearchBox;

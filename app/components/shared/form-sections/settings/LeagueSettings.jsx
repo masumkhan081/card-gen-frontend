@@ -32,6 +32,8 @@ const LeagueSettings = () => {
                 alert(JSON.stringify(error));
             });
     };
+
+    
     return (
 
         <>

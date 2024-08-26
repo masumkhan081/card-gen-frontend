@@ -85,8 +85,8 @@ const Tactics = () => {
         ["slidetackle", "technical"],
         ["tikitaka", "trickstar"],
         ["trivela", "whippedpass"],
-        ["unknown", "unknown"],
-        ["unknown", "unknown"]
+        ["unknown1", "unknown2"],
+        ["unknown3", "unknown4"]
     ];
 
     return (
