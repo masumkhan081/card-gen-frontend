@@ -6,13 +6,18 @@ import MainForm from './shared/MainForm';
 import Image from 'next/image';
 import html2canvas from 'html2canvas';
 import CardSettings from './shared/CardSettings';
-import { playerNameAtom, playerImageAtom, overallAtom, rarityAtom, nationAtom, leagueAtom, positionsAtom, alternatepositionAtom, playstylesAtom, weakAtom, skillmovesAtom, footAtom, defensiveAtom, atackingAtom, pacAtom, shoAtom, phyAtom, pasAtom, defAtom, driAtom, searchQ, searchResult, isSearchResultShowing } from './Atom/GlobalStates';
+import { playerNameAtom, playerImageAtom, overallAtom, rarityAtom, nationAtom, leagueAtom, positionsAtom, alternatepositionAtom, playstylesAtom, weakAtom, skillmovesAtom, footAtom, defensiveAtom, atackingAtom, pacAtom, shoAtom, phyAtom, pasAtom, defAtom, driAtom, searchQ, searchResult, isSearchResultShowing, isCurrentActEdit, selectedItemsAtom } from './Atom/GlobalStates';
 import { useAtom } from 'jotai';
-import { toast } from 'react-toastify';
+
+
 
 
 
 const CardPage = () => {
+
+  const [isCurrentActEdits, setIsCurrentActEdits] = useAtom(isCurrentActEdit);
+
+  const [selectedItems, setSelectedItems] = useAtom(selectedItemsAtom);
 
   const [search, setSearhQ] = useAtom(searchQ);
 
@@ -75,6 +80,8 @@ const CardPage = () => {
   /////////////////////////////// save information finally
 
   const handleSubmit = async (event) => {
+
+
     event.preventDefault();
 
     let formData = new FormData();
@@ -100,26 +107,55 @@ const CardPage = () => {
     formData.append("physical", phy);
 
     try {
-      const response = await fetch(`${BaseURL}/players`, {
-        method: "POST",
-        body: formData,
-        headers: {},
-        redirect: "follow",
-      });
+      if (isCurrentActEdits === false) {
+        const response = await fetch(`${BaseURL}/players`, {
+          method: "POST",
+          body: formData,
+          headers: {},
+          redirect: "follow",
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        alert(">> " + JSON.stringify(data));
-        toast.success('New Player saved successfully');
-        handleDownload();
-      } else {
-        const error = await response.text(); // or response.json() if the error is in JSON format
-        // alert("Error: " + error);
-        toast.error("Error");
+        if (response.ok) {
+          const data = await response.json();
+          // alert(">> " + JSON.stringify(data));
+          alert("New Player saved successfully");
+          // toast.success('New Player saved successfully');
+          handleDownload();
+        } else {
+          const error = await response.text(); // or response.json() if the error is in JSON format
+          alert("Error: " + error);
+          // toast.error("Error");
+        }
       }
+      else {
+
+        alert("else");
+
+        const response = await fetch(`${BaseURL}/players/${selectedItems.id}`, {
+          method: "PATCH",
+          body: formData,
+          headers: {},
+          redirect: "follow",
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          alert(">> " + JSON.stringify(data));
+          alert("New Player updated successfully");
+          // toast.success('New Player saved successfully');
+          handleDownload();
+        } else {
+          const error = await response.text(); // or response.json() if the error is in JSON format
+          alert("Error: " + error);
+          // toast.error("Error");
+        }
+
+
+      }
+
     } catch (error) {
-      // alert("Network Error: " + JSON.stringify(error));
-      toast.error("Error");
+      alert("Network Error: " + JSON.stringify(error));
+      // toast.error("Error");
     }
   };
 
@@ -221,11 +257,12 @@ const CardPage = () => {
           setIsShowing={setIsShowing}
         />
 
-        
+
+        {/* {JSON.stringify(isCurrentActEdits)} */}
+
 
 
         <div id='card-picture' ref={cardPictureRef} className="relative w-[280px] h-[391.453px] mb-[20px] bg-transparent">
-
           {/* rarity image */}
 
           <Image
@@ -236,18 +273,7 @@ const CardPage = () => {
             className="z-1 bg-transparent"
           />
 
-          {/* player image */}
 
-          {/* <div
-            className="absolute inset-0 flex items-center justify-center z-3 bg-transparent top-15 bottom-20 left-10 right-10 "
-          >
-            <div
-              className="w-full h-full bg-no-repeat bg-contain bg-center bg-transparent"
-              style={{
-                backgroundImage: `url(${playerImage ? URL.createObjectURL(playerImage) : ""})`,
-              }}
-            ></div>
-          </div> */}
 
           <div
             className="absolute inset-0 flex items-center justify-center z-3 bg-transparent"
@@ -264,7 +290,8 @@ const CardPage = () => {
             <div
               className="w-full h-full bg-no-repeat bg-contain bg-center bg-transparent"
               style={{
-                backgroundImage: `url(${playerImage ? URL.createObjectURL(playerImage) : ""})`,
+                backgroundImage: `url(${typeof playerImage === 'string' ? playerImage : playerImage ? URL.createObjectURL(playerImage) : ""
+                  })`,
               }}
             ></div>
           </div>
@@ -305,8 +332,12 @@ const CardPage = () => {
           {playstyle.slice(0, 4).map((style, index) => (
             <div
               key={index}
-              className={`h-[26px] w-[29px] flex items-center justify-center gap-3 absolute top-[${165 + index * 30}px] left-[12.8px] bg-transparent`}
-              style={{ backgroundImage: `url(${small_diamond})`, backgroundRepeat: 'no-repeat' }}
+              className="h-[26px] w-[29px] flex items-center justify-center gap-3 absolute left-[12.8px] bg-transparent"
+              style={{
+                backgroundImage: `url(${small_diamond})`,
+                backgroundRepeat: 'no-repeat',
+                top: `${165 + index * 30}px`
+              }}
             >
               <div className="w-full h-full flex mt-[7px] justify-center bg-transparent">
                 <Image
@@ -314,7 +345,7 @@ const CardPage = () => {
                   alt="Icon" // Provide an alt attribute for accessibility
                   width={13}
                   height={13}
-                  className='p-0 m-0 max-w-[13px] min-w-[13px] max-h-[13px] min-h-[13px]'
+                  className="p-0 m-0 max-w-[13px] min-w-[13px] max-h-[13px] min-h-[13px]"
                 />
               </div>
             </div>
@@ -323,8 +354,9 @@ const CardPage = () => {
           {alternatePositions.slice(0, 3).map((position, index) => (
             <div
               key={index}
-              className={`h-[18.75px] w-[33.59px] flex items-center justify-center gap-[30px] absolute top-[${74 + index * 22}px] left-[239px]`}
+              className="h-[18.75px] w-[33.59px] flex items-center justify-center gap-[30px] absolute left-[239px]"
               style={{
+                top: `${74 + index * 22}px`, // Correctly calculate the top position
                 border: '1px solid red',
                 borderRadius: '5.63899px',
                 fontSize: '16.1114px',
@@ -334,14 +366,24 @@ const CardPage = () => {
             >
               <div className="w-full h-full flex items-center justify-center bg-transparent">
                 <svg width="33.59" height="18.75" viewBox="0 0 33.59 18.75" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" stroke-width=".5" />
-                  <text x="50%" y="57%" dominant-baseline="middle" text-anchor="middle" font-size="12.1114" font-weight="bold" fill="black" fontFamily='arial'>
+                  <rect x="0" y="0" width="33.59" height="18.75" rx="5.63899" fill="none" stroke="red" strokeWidth=".5" />
+                  <text
+                    x="50%"
+                    y="57%"
+                    dominantBaseline="middle"
+                    textAnchor="middle"
+                    fontSize="12.1114"
+                    fontWeight="bold"
+                    fill="black"
+                    fontFamily="arial"
+                  >
                     {position}
                   </text>
                 </svg>
               </div>
             </div>
           ))}
+
 
 
           {conditions.map((item, index) =>

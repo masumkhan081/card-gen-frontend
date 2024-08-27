@@ -1,11 +1,14 @@
 import { useAtom } from 'jotai'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
-    atackingAtom, defAtom, defensiveAtom, driAtom, footAtom, pacAtom, pasAtom, phyAtom, shoAtom,
+    atackingAtom, defAtom, defensiveAtom, driAtom, footAtom, pacAtom, pasAtom, phyAtom, selectedItemsAtom, shoAtom,
     skillmovesAtom, weakAtom
 } from '../../Atom/GlobalStates'
 
 const PhysicalFitness = () => {
+
+    const [selectedItems, setSelectedItems] = useAtom(selectedItemsAtom);
+
     const [pac, setPac] = useAtom(pacAtom);
     const [sho, setSho] = useAtom(shoAtom);
     const [pas, setPas] = useAtom(pasAtom);
@@ -31,6 +34,23 @@ const PhysicalFitness = () => {
         color: isSelected ? '#ffffff' : '#000000',
         border: '1px solid rgb(175, 175, 175)'
     });
+
+    useEffect(() => {
+        if (selectedItems) {
+            setPac(selectedItems.pace);
+            setSho(selectedItems.shot);
+            setPas(selectedItems.pass);
+            setDri(selectedItems.dribbling);
+            setDef(selectedItems.defense);
+            setPhy(selectedItems.physical);
+
+            setFoot(selectedItems.foot);
+            setWeakfoot(selectedItems.weakFoot);
+            setSkillmoves(selectedItems.skillMoves);
+            setDefensive(selectedItems.defWorkrate);
+            setAttackig(selectedItems.atkWorkrate);
+        }
+    }, [selectedItems]);
 
     return (
         <>

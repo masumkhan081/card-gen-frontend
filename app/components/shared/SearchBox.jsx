@@ -1,17 +1,19 @@
 import React, { useRef, useEffect } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
+import { useAtom } from 'jotai'; // Assuming you are using Jotai for state management
+import { isCurrentActEdit, selectedItemsAtom } from '../Atom/GlobalStates';
 
 const SearchBox = ({ search, chgHandler, isShowing, searchResults, setIsShowing }) => {
+  const [selectedItems, setSelectedItems] = useAtom(selectedItemsAtom);
+  const [isCurrentActEdits, setIsCurrentActEdits] = useAtom(isCurrentActEdit);
   const dropdownRef = useRef(null);
 
   useEffect(() => {
+    console.log('Selected Items:', selectedItems); // Log selectedItems to the console
+
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        // Logic to hide dropdown when clicking outside
         if (isShowing) {
-          // Assuming there's a method to update `isShowing` to false
-          // You need to pass `setIsShowing` as a prop or use it in a state management solution
           setIsShowing(false);
         }
       }
@@ -19,14 +21,22 @@ const SearchBox = ({ search, chgHandler, isShowing, searchResults, setIsShowing 
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isShowing]);
+  }, [isShowing, selectedItems]); // Added selectedItems to the dependency array
 
   useEffect(() => {
-    // Hide dropdown when search input is cleared
     if (search === '') {
       setIsShowing(false);
     }
   }, [search]);
+
+  const handleItemClick = (item) => {
+    setSelectedItems(() =>  item); // Adds the clicked item to selectedItems
+    console.log('Clicked Item:', item); // Logs the clicked item to the console
+    setIsShowing(false); // Optionally hide the dropdown after selection
+    setIsCurrentActEdits(true);
+     
+  };
+
 
   return (
     <>
@@ -49,20 +59,19 @@ const SearchBox = ({ search, chgHandler, isShowing, searchResults, setIsShowing 
               <li
                 key={item.id}
                 className='cursor-pointer hover:bg-gray-200 p-[1px] items-center flex border-b hover:no-underline'
+                onClick={() => handleItemClick(item)}
               >
-                <Link href={`/card-creator/${item.id}`}  >
-                  <Image src={item.image} width={54} height={54} className="border" />
-                  <span className="w-full pl-2">
-                    {item.playerName}<br />
-                    {item.overall}
-                  </span>
-                </Link>
-
+                <Image src={item.image} width={54} height={54} className="border" />
+                <span className="w-full pl-2">
+                  {item.playerName}<br />
+                  {item.overall}
+                </span>
               </li>
             ))}
           </ul>
         </div>
       )}
+
     </>
   );
 };

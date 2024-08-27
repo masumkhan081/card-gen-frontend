@@ -1,11 +1,11 @@
 import { useAtom } from 'jotai';
 import Image from 'next/image'
-import React, { useState } from 'react'
-import { alternatepositionAtom, playstylesAtom, positionsAtom } from '../../Atom/GlobalStates';
+import React, { useEffect, useState } from 'react'
+import { alternatepositionAtom, playstylesAtom, positionsAtom, selectedItemsAtom } from '../../Atom/GlobalStates';
 
 const Tactics = () => {
 
-
+    const [selectedItems, setSelectedItems] = useAtom(selectedItemsAtom);
 
     const [primaryPosition, setPrimaryPosition] = useAtom(positionsAtom);
     const [alternatePositions, setAlternatePositions] = useAtom(alternatepositionAtom);
@@ -88,6 +88,16 @@ const Tactics = () => {
         ["unknown1", "unknown2"],
         ["unknown3", "unknown4"]
     ];
+
+
+    useEffect(() => {
+        if (selectedItems) {
+            setPrimaryPosition(selectedItems.position);
+            setAlternatePositions(selectedItems.altPosition);
+            setSelectedButtons(selectedItems.playStyle);
+            
+        }
+    }, [selectedItems]);
 
     return (
         <>

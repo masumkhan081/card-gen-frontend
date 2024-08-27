@@ -1,6 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useAtom } from 'jotai';
-import { playerNameAtom, playerImageAtom, overallAtom, rarityAtom, leagueAtom, countriesAtom, nationAtom, raritiesAtom, leaguesAtom } from '../../Atom/GlobalStates';
+import {
+    playerNameAtom,
+    playerImageAtom,
+    overallAtom,
+    rarityAtom,
+    leagueAtom,
+    countriesAtom,
+    nationAtom,
+    raritiesAtom,
+    leaguesAtom,
+    selectedItemsAtom
+} from '../../Atom/GlobalStates';
 import { IoMdArrowDropdown } from "react-icons/io";
 
 const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) => {
@@ -34,7 +45,6 @@ const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) 
             <label htmlFor={id} className="form-label">{label}</label>
 
             <div
-
                 className="form-input mt-3 cursor-pointer border p-[0.5rem] rounded-[0.375rem] border-gray-400 border-[1px] text-black"
                 onClick={() => setIsOpen(!isOpen)}
             >
@@ -44,7 +54,6 @@ const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) 
 
             </div>
 
-
             {isOpen && (
                 <div className="absolute border border-gray-300 mt-2 w-full bg-white z-10 text-black">
                     <input
@@ -53,7 +62,6 @@ const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) 
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full mt-0 border-t-0 border-r-0 border-l-0 border-b border-gray-300 rounded-none"
-
                     />
                     <div className="max-h-40 overflow-y-auto">
                         {filteredOptions.length > 0 ? (
@@ -77,6 +85,8 @@ const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) 
 };
 
 const PrimaryDetails = () => {
+    const [selectedItems, setSelectedItems] = useAtom(selectedItemsAtom);
+
     const [playerName, setPlayerName] = useAtom(playerNameAtom);
     const [playerImage, setPlayerImage] = useAtom(playerImageAtom);
     const [overall, setOverall] = useAtom(overallAtom);
@@ -95,14 +105,18 @@ const PrimaryDetails = () => {
                 const response = await fetch(`${BaseURL}/cards/all`);
                 const result = await response.json();
                 setRarities(result.data.data);
-                setRarity(result.data.data[0].image);
+                if (selectedItems) {
+                    setRarity(selectedItems.rarity);
+                } else {
+                    setRarity(result.data.data[0].image);
+                }
             } catch (error) {
                 console.error('Error fetching the rarities:', error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [BaseURL, selectedItems]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -110,14 +124,18 @@ const PrimaryDetails = () => {
                 const response = await fetch(`${BaseURL}/countries/all`);
                 const result = await response.json();
                 setCountries(result.data.data);
-                setNation(result.data.data[0].image);
+                if (selectedItems) {
+                    setNation(selectedItems.nationality);
+                } else {
+                    setNation(result.data.data[0].image);
+                }
             } catch (error) {
                 console.error('Error fetching the countries:', error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [BaseURL, selectedItems]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -125,14 +143,26 @@ const PrimaryDetails = () => {
                 const response = await fetch(`${BaseURL}/leagues/all`);
                 const result = await response.json();
                 setLeagues(result.data.data);
-                setLeague(result.data.data[0].image);
+                if (selectedItems) {
+                    setLeague(selectedItems.league);
+                } else {
+                    setLeague(result.data.data[0].image);
+                }
             } catch (error) {
                 console.error('Error fetching the leagues:', error);
             }
         };
 
         fetchData();
-    }, []);
+    }, [BaseURL, selectedItems]);
+
+    useEffect(() => {
+        if (selectedItems) {
+            setPlayerName(selectedItems.playerName);
+            setOverall(selectedItems.overall);
+            setPlayerImage(selectedItems.image);
+        }
+    }, [selectedItems]);
 
     const rarityOptions = rarities.map(rarity => ({
         value: rarity.image,
@@ -172,7 +202,6 @@ const PrimaryDetails = () => {
                                 }
                             }}
                         />
-
                     </div>
 
                     <div className="form-group w-full">
@@ -240,6 +269,6 @@ const PrimaryDetails = () => {
             </div>
         </div>
     );
-}
+};
 
 export default PrimaryDetails;
