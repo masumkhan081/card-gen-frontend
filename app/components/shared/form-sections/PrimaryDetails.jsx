@@ -52,15 +52,15 @@ const SearchableSelect = ({ id, labelName, keyName, value, onChange, options, pl
 
             {isOpen && (
                 <div className="absolute border border-gray-300 mt-2 w-full bg-white z-10 text-black">
-                    {/* <input
+                    <input
                         type="search"
                         placeholder="Search..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full mt-0 border-t-0 border-r-0 border-l-0 border-b border-gray-300 rounded-none"
-                    /> */}
+                    />
 
-                    <div className="max-h-[80px] min-h-[80px] overflow-y-auto">
+                    <div>
                         {options.length > 0 ? (
                             options.map(option => (
                                 <div
@@ -71,7 +71,7 @@ const SearchableSelect = ({ id, labelName, keyName, value, onChange, options, pl
                                         setIsOpen(false);
                                     }}
                                 >
-                                    {labelName}
+                                    {option[keyName]}
                                 </div>
                             ))
                         ) : (
@@ -252,7 +252,7 @@ const PrimaryDetails = () => {
                         <SearchableSelect
                             id="rarity"
                             labelName={rarity?.cardName}
-                            keyName="cardName"
+                            keyName={"cardName"}
                             value={rarity?.image}
                             onChange={handlechange}
                             options={rarities}
@@ -267,8 +267,8 @@ const PrimaryDetails = () => {
                     <div className="form-group w-full">
                         <SearchableSelect
                             id="nation"
-                            keyName="countryName"
-                            labelName={nation?.countryName}
+                            keyName={"countryName"}
+                         labelName={nation?.countryName}
                             value={nation?.image}
                             onChange={handlechange}
                             options={countries}
@@ -280,8 +280,8 @@ const PrimaryDetails = () => {
                     <div className="form-group w-full">
                         <SearchableSelect
                             id="league"
-                            keyName="leagueName"
-                            labelName={league?.leagueName}
+                            keyName= {"leagueName"}
+                             labelName={league?.leagueName}
                             value={league?.image}
                             onChange={handlechange}
                             options={leagues}

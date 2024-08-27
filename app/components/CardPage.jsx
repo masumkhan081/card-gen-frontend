@@ -77,7 +77,7 @@ const CardPage = () => {
   const [isCurrentActEdits, setIsCurrentActEdits] = useAtom(isCurrentActEdit);
 
   const [selectedItems, setSelectedItems] = useAtom(selectedItemsAtom);
-  
+
 
   const handleSubmit = async (event) => {
 
@@ -118,8 +118,8 @@ const CardPage = () => {
 
         if (response.ok) {
           const data = await response.json();
-           alert(">> " + JSON.stringify(data));
-          // alert("New Player saved successfully");
+          //  alert(">> " + JSON.stringify(data));
+          alert("New Player saved successfully");
           // toast.success('New Player saved successfully');
           handleDownload();
         } else {
@@ -130,7 +130,7 @@ const CardPage = () => {
       }
       else {
 
-        alert("else");
+
 
         const response = await fetch(`${BaseURL}/players/${selectedItems.id}`, {
           method: "PATCH",
@@ -141,13 +141,13 @@ const CardPage = () => {
 
         if (response.ok) {
           const data = await response.json();
-          alert(">> " + JSON.stringify(data));
+          // alert(">> " + JSON.stringify(data));
           alert("New Player updated successfully");
           // toast.success('New Player saved successfully');
           handleDownload();
         } else {
           const error = await response.text(); // or response.json() if the error is in JSON format
-          alert("Error: " + error);
+          // alert("Error: " + error);
           // toast.error("Error");
         }
 
@@ -173,6 +173,7 @@ const CardPage = () => {
   const cardPictureRef = useRef(null);
 
   const handleDownload = () => {
+
     const element = cardPictureRef.current;
     if (!element) return;
 
@@ -243,6 +244,11 @@ const CardPage = () => {
     setDragging(false);
   };
 
+  
+  // useEffect(()=>{
+  //   alert(playerImage+"  "+typeof playerImage)
+  // },[playerImage])
+
 
   return (
 
@@ -277,8 +283,8 @@ const CardPage = () => {
 
 
           {playerImage && (
-            <div
-              className="absolute inset-0 flex items-center justify-center z-3 bg-transparent"
+            <span
+              className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center z-30 bg-transparent"
               style={{
                 top: position.y,
                 left: position.x,
@@ -297,7 +303,7 @@ const CardPage = () => {
                     : `url(${playerImage})`,
                 }}
               ></div>
-            </div>
+            </span>
           )}
 
           {/* {JSON.stringify(league)} */}
