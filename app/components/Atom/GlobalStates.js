@@ -5,7 +5,7 @@ export const playerNameAtom = atom('');
 export const playerImageAtom = atom(null);
 export const overallAtom = atom(0);
 
-export const rarityAtom = atom('');
+export const rarityAtom = atom();
 export const raritiesAtom = atom([]);
 
 export const leagueAtom = atom();

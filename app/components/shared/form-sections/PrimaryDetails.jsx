@@ -14,16 +14,10 @@ import {
 } from '../../Atom/GlobalStates';
 import { IoMdArrowDropdown } from "react-icons/io";
 
-const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) => {
+const SearchableSelect = ({ id, labelName, keyName, value, onChange, options, placeholder, label }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const containerRef = useRef(null);
-
-    const handleSelect = (option) => {
-        onChange(option);
-        setIsOpen(false);
-        setSearchTerm('');
-    };
 
     const handleClickOutside = (event) => {
         if (containerRef.current && !containerRef.current.contains(event.target)) {
@@ -31,24 +25,26 @@ const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) 
         }
     };
 
-    const filteredOptions = options.filter(option =>
-        option.label.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // const filteredOptions = options.filter(option =>
+    //     option.label.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
 
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
+    }, [options]);
+
+
 
     return (
         <div ref={containerRef} className="relative">
             <label htmlFor={id} className="form-label">{label}</label>
 
             <div
-                className="form-input mt-3 cursor-pointer border p-[0.5rem] rounded-[0.375rem] border-gray-400 border-[1px] text-black"
+                className="form-input max-h-[40px] min-h-[40px] mt-3 cursor-pointer border p-[0.5rem] rounded-[0.375rem] border-gray-400 border-[1px] text-black"
                 onClick={() => setIsOpen(!isOpen)}
             >
-                {value ? options.find(option => option.value === value)?.label : placeholder}
+                {labelName}
 
                 <span className="float-right"><IoMdArrowDropdown size={22} /></span>
 
@@ -56,22 +52,26 @@ const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) 
 
             {isOpen && (
                 <div className="absolute border border-gray-300 mt-2 w-full bg-white z-10 text-black">
-                    <input
+                    {/* <input
                         type="search"
                         placeholder="Search..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="w-full mt-0 border-t-0 border-r-0 border-l-0 border-b border-gray-300 rounded-none"
-                    />
-                    <div className="max-h-40 overflow-y-auto">
-                        {filteredOptions.length > 0 ? (
-                            filteredOptions.map(option => (
+                    /> */}
+
+                    <div className="max-h-[80px] min-h-[80px] overflow-y-auto">
+                        {options.length > 0 ? (
+                            options.map(option => (
                                 <div
-                                    key={option.value}
-                                    className="p-2 hover:bg-gray-200 cursor-pointer"
-                                    onClick={() => handleSelect(option.value)}
+                                    key={option.id}
+                                    className="px-2 py-4 hover:bg-gray-200 cursor-pointer text-black"
+                                    onClick={() => {
+                                        onChange({ entity: option, type: id });
+                                        setIsOpen(false);
+                                    }}
                                 >
-                                    {option.label}
+                                    {labelName}
                                 </div>
                             ))
                         ) : (
@@ -92,7 +92,7 @@ const PrimaryDetails = () => {
     const [overall, setOverall] = useAtom(overallAtom);
     const [rarity, setRarity] = useAtom(rarityAtom);
     const [nation, setNation] = useAtom(nationAtom);
-    const [leagueSelected, setLeague] = useAtom(leagueAtom);
+    const [league, setLeague] = useAtom(leagueAtom);
     const [countries, setCountries] = useAtom(countriesAtom);
     const [rarities, setRarities] = useAtom(raritiesAtom);
     const [leagues, setLeagues] = useAtom(leaguesAtom);
@@ -108,7 +108,9 @@ const PrimaryDetails = () => {
                 if (selectedItems) {
                     setRarity(selectedItems.rarity);
                 } else {
+
                     setRarity(result.data.data[0]);
+
                 }
             } catch (error) {
                 console.error('Error fetching the rarities:', error);
@@ -127,7 +129,7 @@ const PrimaryDetails = () => {
                 if (selectedItems) {
                     setNation(selectedItems.nationality);
                 } else {
-                    setNation(result.data.data[0].image);
+                    setNation(result.data.data[0]);
                 }
             } catch (error) {
                 console.error('Error fetching the countries:', error);
@@ -146,7 +148,7 @@ const PrimaryDetails = () => {
                 if (selectedItems) {
                     setLeague(selectedItems.league);
                 } else {
-                    setLeague(result.data.data[0].image);
+                    setLeague(result.data.data[0]);
                 }
             } catch (error) {
                 console.error('Error fetching the leagues:', error);
@@ -154,7 +156,7 @@ const PrimaryDetails = () => {
         };
 
         fetchData();
-    }, [selectedItems]);
+    }, [BaseURL, selectedItems]);
 
     useEffect(() => {
         if (selectedItems) {
@@ -164,20 +166,33 @@ const PrimaryDetails = () => {
         }
     }, [selectedItems]);
 
-    const rarityOptions = rarities.map(rarity => ({
-        value: rarity.image,
-        label: rarity.cardName
-    }));
+    function handlechange({ entity, type }) {
+        if (type === "nation") {
+            setNation(entity)
+        }
+        if (type === "league") {
+            setLeague(entity)
+        }
+        if (type === "rarity") {
+            setRarity(entity)
+        }
+    }
 
-    const countryOptions = countries.map(country => ({
-        value: country.image,
-        label: country.countryName
-    }));
 
-    const leagueOptions = leagues.map(league => ({
-        value: league.image,
-        label: league.leagueName
-    }));
+    // const rarityOptions = rarities.map(rarity => ({
+    //     value: rarity.image,
+    //     label: rarity.cardName
+    // }));
+
+    // const countryOptions = countries.map(country => ({
+    //     value: country.image,
+    //     label: country.countryName
+    // }));
+
+    // const leagueOptions = leagues.map(league => ({
+    //     value: league.image,
+    //     label: league.leagueName
+    // })); 
 
     return (
         <div className='border pb-5 rounded-[8px] border-selection-color'>
@@ -215,6 +230,8 @@ const PrimaryDetails = () => {
                     </div>
                 </div>
 
+                {/* {JSON.stringify(rarity)} */}
+
                 <div className="form-row flex flex-col md:flex-row lg:flex-row xl:flex-row gap-5 pb-5 justify-between">
                     <div className="form-group w-full">
                         <label htmlFor="overall" className="form-label">Overall</label>
@@ -234,11 +251,14 @@ const PrimaryDetails = () => {
                     <div className="form-group w-full">
                         <SearchableSelect
                             id="rarity"
-                            value={rarity}
-                            onChange={setRarity}
-                            options={rarityOptions}
+                            labelName={rarity?.cardName}
+                            keyName="cardName"
+                            value={rarity?.image}
+                            onChange={handlechange}
+                            options={rarities}
                             placeholder="Select Rarity"
                             label="Rarity"
+
                         />
                     </div>
                 </div>
@@ -247,9 +267,11 @@ const PrimaryDetails = () => {
                     <div className="form-group w-full">
                         <SearchableSelect
                             id="nation"
-                            value={nation}
-                            onChange={setNation}
-                            options={countryOptions}
+                            keyName="countryName"
+                            labelName={nation?.countryName}
+                            value={nation?.image}
+                            onChange={handlechange}
+                            options={countries}
                             placeholder="Select Nation"
                             label="Nation"
                         />
@@ -258,9 +280,11 @@ const PrimaryDetails = () => {
                     <div className="form-group w-full">
                         <SearchableSelect
                             id="league"
-                            value={leagueSelected}
-                            onChange={setLeague}
-                            options={leagueOptions}
+                            keyName="leagueName"
+                            labelName={league?.leagueName}
+                            value={league?.image}
+                            onChange={handlechange}
+                            options={leagues}
                             placeholder="Select League"
                             label="League"
                         />

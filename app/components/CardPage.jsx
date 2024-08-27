@@ -85,12 +85,13 @@ const CardPage = () => {
     event.preventDefault();
 
     let formData = new FormData();
+
     formData.append("playerName", playerName);
     formData.append("playerImage", playerImage);
     formData.append("overall", overall);
-    formData.append("rarity", rarity);
-    formData.append("nationality", nation);
-    formData.append("league", league);
+    formData.append("rarity", rarity.id);
+    formData.append("nationality", nation.id);
+    formData.append("league", league.id);
     formData.append("foot", foot);
     formData.append("skillMoves", skill);
     formData.append("weakFoot", weakfoot);
@@ -117,8 +118,8 @@ const CardPage = () => {
 
         if (response.ok) {
           const data = await response.json();
-          // alert(">> " + JSON.stringify(data));
-          alert("New Player saved successfully");
+           alert(">> " + JSON.stringify(data));
+          // alert("New Player saved successfully");
           // toast.success('New Player saved successfully');
           handleDownload();
         } else {
@@ -266,7 +267,7 @@ const CardPage = () => {
           {/* rarity image */}
 
           <Image
-            src={rarity}
+            src={rarity?.image}
             alt="Background Image"
             layout="fill"
             objectFit="cover"
@@ -424,13 +425,13 @@ const CardPage = () => {
           <div className="absolute text-white font-500 text-xs z-2 bg-transparent top-[319px] h-[fit-content] w-[full] left-10 right-10 text-center flex gap-3 items-center justify-center">
             {nation ? (
               <div className="bg-transparent max-w-[26px] min-w-[26px] max-h-[18px] min-h-[18px] flex items-center justify-center">
-                <Image className='p-0 m-0 max-w-[26px] min-w-[26px] max-h-[18px] min-h-[18px]' src={nation} width={26} height={18.13} alt='nation' />
+                <Image className='p-0 m-0 max-w-[26px] min-w-[26px] max-h-[18px] min-h-[18px]' src={nation?.image} width={26} height={18.13} alt='nation' />
               </div>
             ) : null}
 
             {league ? (
               <div className="bg-transparent p-0 m-0 max-w-[26px] min-w-[26px] max-h-[18px] min-h-[18px] flex items-center justify-center">
-                <Image className='p-0 m-0 max-w-[26px] min-w-[26px] max-h-[18px] min-h-[18px]' src={league} width={22} height={12} alt='league' />
+                <Image className='p-0 m-0 max-w-[26px] min-w-[26px] max-h-[18px] min-h-[18px]' src={league?.image} width={22} height={12} alt='league' />
               </div>
             ) : null}
 
