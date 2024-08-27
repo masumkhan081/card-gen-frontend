@@ -8,7 +8,7 @@ export const overallAtom = atom(0);
 export const rarityAtom = atom('');
 export const raritiesAtom = atom([]);
 
-export const leagueAtom = atom('');
+export const leagueAtom = atom();
 export const leaguesAtom = atom([]);
 
 export const nationAtom = atom('');

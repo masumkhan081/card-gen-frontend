@@ -50,7 +50,7 @@ const SearchableSelect = ({ id, value, onChange, options, placeholder, label }) 
             >
                 {value ? options.find(option => option.value === value)?.label : placeholder}
 
-                <span className="float-right"><IoMdArrowDropdown size={22}/></span>
+                <span className="float-right"><IoMdArrowDropdown size={22} /></span>
 
             </div>
 
@@ -92,7 +92,7 @@ const PrimaryDetails = () => {
     const [overall, setOverall] = useAtom(overallAtom);
     const [rarity, setRarity] = useAtom(rarityAtom);
     const [nation, setNation] = useAtom(nationAtom);
-    const [league, setLeague] = useAtom(leagueAtom);
+    const [leagueSelected, setLeague] = useAtom(leagueAtom);
     const [countries, setCountries] = useAtom(countriesAtom);
     const [rarities, setRarities] = useAtom(raritiesAtom);
     const [leagues, setLeagues] = useAtom(leaguesAtom);
@@ -108,7 +108,7 @@ const PrimaryDetails = () => {
                 if (selectedItems) {
                     setRarity(selectedItems.rarity);
                 } else {
-                    setRarity(result.data.data[0].image);
+                    setRarity(result.data.data[0]);
                 }
             } catch (error) {
                 console.error('Error fetching the rarities:', error);
@@ -154,7 +154,7 @@ const PrimaryDetails = () => {
         };
 
         fetchData();
-    }, [BaseURL, selectedItems]);
+    }, [selectedItems]);
 
     useEffect(() => {
         if (selectedItems) {
@@ -258,7 +258,7 @@ const PrimaryDetails = () => {
                     <div className="form-group w-full">
                         <SearchableSelect
                             id="league"
-                            value={league}
+                            value={leagueSelected}
                             onChange={setLeague}
                             options={leagueOptions}
                             placeholder="Select League"

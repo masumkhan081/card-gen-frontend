@@ -14,11 +14,6 @@ import { useAtom } from 'jotai';
 
 
 const CardPage = () => {
-
-  const [isCurrentActEdits, setIsCurrentActEdits] = useAtom(isCurrentActEdit);
-
-  const [selectedItems, setSelectedItems] = useAtom(selectedItemsAtom);
-
   const [search, setSearhQ] = useAtom(searchQ);
 
   const [searchResults, setSearResults] = useAtom(searchResult);
@@ -78,6 +73,11 @@ const CardPage = () => {
   }, [search]);
 
   /////////////////////////////// save information finally
+
+  const [isCurrentActEdits, setIsCurrentActEdits] = useAtom(isCurrentActEdit);
+
+  const [selectedItems, setSelectedItems] = useAtom(selectedItemsAtom);
+  
 
   const handleSubmit = async (event) => {
 
@@ -275,26 +275,32 @@ const CardPage = () => {
 
 
 
-          <div
-            className="absolute inset-0 flex items-center justify-center z-3 bg-transparent"
-            style={{
-              top: position.y,
-              left: position.x,
-              cursor: dragging ? "grabbing" : "grab",
-            }}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp} // To handle mouse leaving the div while dragging
-          >
+          {playerImage && (
             <div
-              className="w-full h-full bg-no-repeat bg-contain bg-center bg-transparent"
+              className="absolute inset-0 flex items-center justify-center z-3 bg-transparent"
               style={{
-                backgroundImage: `url(${typeof playerImage === 'string' ? playerImage : playerImage ? URL.createObjectURL(playerImage) : ""
-                  })`,
+                top: position.y,
+                left: position.x,
+                cursor: dragging ? "grabbing" : "grab",
               }}
-            ></div>
-          </div>
+              onMouseDown={handleMouseDown}
+              onMouseMove={handleMouseMove}
+              onMouseUp={handleMouseUp}
+              onMouseLeave={handleMouseUp} // To handle mouse leaving the div while dragging
+            >
+              <div
+                className="w-full h-full bg-no-repeat bg-contain bg-center bg-transparent"
+                style={{
+                  backgroundImage: typeof playerImage !== 'string'
+                    ? `url(${URL.createObjectURL(playerImage)})`
+                    : `url(${playerImage})`,
+                }}
+              ></div>
+            </div>
+          )}
+
+          {/* {JSON.stringify(league)} */}
+
 
 
 
