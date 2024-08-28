@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const MainCardSettings = () => {
 
@@ -27,10 +28,10 @@ const MainCardSettings = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                alert(">> " + JSON.stringify(data));
+                toast.success("Rarity added successfully");
             })
             .catch((error) => {
-                alert(JSON.stringify(error));
+                toast.error("Error Occured");
             });
     };
 

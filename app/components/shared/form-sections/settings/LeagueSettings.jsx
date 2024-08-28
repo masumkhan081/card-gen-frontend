@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react'
+import { toast } from 'react-toastify';
 
 const LeagueSettings = () => {
     const [leagueName, setLeagueName] = useState("");
@@ -26,10 +27,11 @@ const LeagueSettings = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                alert(">> " + JSON.stringify(data));
+                // alert(">> " + JSON.stringify(data));
+                toast.success("League added successfully");
             })
             .catch((error) => {
-                alert(JSON.stringify(error));
+                toast.error("Error Occured");
             });
     };
 

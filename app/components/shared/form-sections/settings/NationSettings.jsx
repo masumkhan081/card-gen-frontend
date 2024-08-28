@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useRef } from "react";
+import { toast } from "react-toastify";
 
 const NationSettings = () => {
   // Base URL
@@ -28,10 +29,11 @@ const NationSettings = () => {
       });
 
       const data = await response.json();
-      alert(">> " + JSON.stringify(data));
+      toast.success("Nation added successfully");
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while uploading the data.");
+      // alert("An error occurred while uploading the data.");
+      toast.error("An error occurred while uploading the data.");
     }
   };
 

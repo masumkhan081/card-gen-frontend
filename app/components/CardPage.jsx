@@ -8,6 +8,8 @@ import html2canvas from 'html2canvas';
 import CardSettings from './shared/CardSettings';
 import { playerNameAtom, playerImageAtom, overallAtom, rarityAtom, nationAtom, leagueAtom, positionsAtom, alternatepositionAtom, playstylesAtom, weakAtom, skillmovesAtom, footAtom, defensiveAtom, atackingAtom, pacAtom, shoAtom, phyAtom, pasAtom, defAtom, driAtom, searchQ, searchResult, isSearchResultShowing, isCurrentActEdit, selectedItemsAtom } from './Atom/GlobalStates';
 import { useAtom } from 'jotai';
+import { toast } from 'react-toastify';
+
 
 
 
@@ -119,12 +121,13 @@ const CardPage = () => {
         if (response.ok) {
           const data = await response.json();
           //  alert(">> " + JSON.stringify(data));
-          alert("New Player saved successfully");
-          // toast.success('New Player saved successfully');
+          // alert("New Player saved successfully");
+          toast.success('New Player saved successfully');
           handleDownload();
         } else {
           const error = await response.text(); // or response.json() if the error is in JSON format
-          alert("Error: " + error);
+          // alert("Error: " + error);
+          toast.error('Error occured');
           // toast.error("Error");
         }
       }
@@ -141,22 +144,21 @@ const CardPage = () => {
 
         if (response.ok) {
           const data = await response.json();
-          // alert(">> " + JSON.stringify(data));
-          alert("New Player updated successfully");
-          // toast.success('New Player saved successfully');
+          
+          toast.success('New Player saved successfully');
           handleDownload();
         } else {
           const error = await response.text(); // or response.json() if the error is in JSON format
           // alert("Error: " + error);
-          // toast.error("Error");
+          toast.error("Error");
         }
 
 
       }
 
     } catch (error) {
-      alert("Network Error: " + JSON.stringify(error));
-      // toast.error("Error");
+      // alert("Network Error: " + JSON.stringify(error));
+      toast.error("Error");
     }
   };
 
@@ -244,7 +246,6 @@ const CardPage = () => {
     setDragging(false);
   };
 
-  
   // useEffect(()=>{
   //   alert(playerImage+"  "+typeof playerImage)
   // },[playerImage])
@@ -264,10 +265,7 @@ const CardPage = () => {
           setIsShowing={setIsShowing}
         />
 
-
         {/* {JSON.stringify(isCurrentActEdits)} */}
-
-
 
         <div id='card-picture' ref={cardPictureRef} className="relative w-[280px] h-[391.453px] mb-[20px] bg-transparent">
           {/* rarity image */}
@@ -280,30 +278,30 @@ const CardPage = () => {
             className="z-1 bg-transparent"
           />
 
-
-
           {playerImage && (
-            <span
-              className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center z-30 bg-transparent"
-              style={{
-                top: position.y,
-                left: position.x,
-                cursor: dragging ? "grabbing" : "grab",
-              }}
-              onMouseDown={handleMouseDown}
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp} // To handle mouse leaving the div while dragging
+            <div
+              className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center z-3 bg-transparent"
+
             >
-              <div
-                className="w-full h-full bg-no-repeat bg-contain bg-center bg-transparent"
-                style={{
-                  backgroundImage: typeof playerImage !== 'string'
-                    ? `url(${URL.createObjectURL(playerImage)})`
-                    : `url(${playerImage})`,
-                }}
-              ></div>
-            </span>
+              <div className="w-full h-full relative bg-transparent">
+                <Image
+                  src={typeof playerImage === 'string' ? playerImage : URL.createObjectURL(playerImage)}
+                  alt="Player Image"
+                  layout="fill"
+                  objectFit="contain"
+                  className="bg-transparent"
+                  style={{
+                    top: position.y,
+                    left: position.x,
+                    cursor: dragging ? "all-scroll" : "all-scroll",
+                  }}
+                  onMouseDown={handleMouseDown}
+                  onMouseMove={handleMouseMove}
+                  onMouseUp={handleMouseUp}
+                  onMouseLeave={handleMouseUp}
+                />
+              </div>
+            </div>
           )}
 
           {/* {JSON.stringify(league)} */}
@@ -422,7 +420,6 @@ const CardPage = () => {
                   </svg>
                 </div>
               </div>
-
 
             ) : null
           )}

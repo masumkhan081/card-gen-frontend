@@ -25,16 +25,15 @@ const SearchableSelect = ({ id, labelName, keyName, value, onChange, options, pl
         }
     };
 
-    // const filteredOptions = options.filter(option =>
-    //     option.label.toLowerCase().includes(searchTerm.toLowerCase())
-    // );
-
     useEffect(() => {
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [options]);
+    }, []);
 
-
+    // Filter options based on the searchTerm
+    const filteredOptions = options.filter(option =>
+        option[keyName].toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
     return (
         <div ref={containerRef} className="relative">
@@ -61,14 +60,15 @@ const SearchableSelect = ({ id, labelName, keyName, value, onChange, options, pl
                     />
 
                     <div>
-                        {options.length > 0 ? (
-                            options.map(option => (
+                        {filteredOptions.length > 0 ? (
+                            filteredOptions.map(option => (
                                 <div
                                     key={option.id}
                                     className="px-2 py-4 hover:bg-gray-200 cursor-pointer text-black"
                                     onClick={() => {
                                         onChange({ entity: option, type: id });
                                         setIsOpen(false);
+                                        setSearchTerm(''); // Clear the search term after selecting an option
                                     }}
                                 >
                                     {option[keyName]}
@@ -83,6 +83,7 @@ const SearchableSelect = ({ id, labelName, keyName, value, onChange, options, pl
         </div>
     );
 };
+
 
 const PrimaryDetails = () => {
     const [selectedItems, setSelectedItems] = useAtom(selectedItemsAtom);
@@ -234,7 +235,7 @@ const PrimaryDetails = () => {
 
                 <div className="form-row flex flex-col md:flex-row lg:flex-row xl:flex-row gap-5 pb-5 justify-between">
                     <div className="form-group w-full">
-                        <label htmlFor="overall" className="form-label">Overall</label>
+                        <label htmlFor="overall" className="form-label">Overall <span className='text-red-500'>(0-99)</span></label>
                         <input
                             id="overall"
                             type="text"
@@ -268,7 +269,7 @@ const PrimaryDetails = () => {
                         <SearchableSelect
                             id="nation"
                             keyName={"countryName"}
-                         labelName={nation?.countryName}
+                            labelName={nation?.countryName}
                             value={nation?.image}
                             onChange={handlechange}
                             options={countries}
@@ -280,8 +281,8 @@ const PrimaryDetails = () => {
                     <div className="form-group w-full">
                         <SearchableSelect
                             id="league"
-                            keyName= {"leagueName"}
-                             labelName={league?.leagueName}
+                            keyName={"leagueName"}
+                            labelName={league?.leagueName}
                             value={league?.image}
                             onChange={handlechange}
                             options={leagues}

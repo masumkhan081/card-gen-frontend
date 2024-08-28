@@ -22,8 +22,13 @@ const PhysicalFitness = () => {
     const [defensive, setDefensive] = useAtom(defensiveAtom);
 
     const handleInputChange = (setter) => (event) => {
-        setter(event.target.value);
+        const value = event.target.value;
+
+        if (value === '' || (value.length <= 2 && Number(value) <= 99)) {
+            setter(value);
+        }
     };
+
 
     const handleButtonClick = (setter, value) => () => {
         setter(value);
