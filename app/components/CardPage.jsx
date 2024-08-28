@@ -145,7 +145,7 @@ const CardPage = () => {
         if (response.ok) {
           const data = await response.json();
           
-          toast.success('New Player saved successfully');
+          toast.success('New Player updated successfully');
           handleDownload();
         } else {
           const error = await response.text(); // or response.json() if the error is in JSON format
